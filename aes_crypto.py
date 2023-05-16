@@ -1,4 +1,5 @@
 import os.path
+import zipfile
 from hashlib import md5
 from os import urandom
 
@@ -64,19 +65,40 @@ class UserCrypto(object):
             out_file.write(bytes(x for x in chunk))
         in_file.close()
         out_file.close()
+        
+def compress_dir(_input_dir,_output_file):
+    z = zipfile.ZipFile(_output_file, mode="w", compression=zipfile.ZIP_DEFLATED, allowZip64=True)
+    for root,dirs,files in os.walk(_input_dir):
+        fpath = root.replace(_input_dir,"") # 去掉目标跟路径，只对目标文件夹下边的文件及文件夹进行压缩
+        for file in files:
+            z.write(os.path.join(root,file),arcname=os.path.join(fpath,file))
 
-
-origin_file = os.path.join(os.path.dirname(__file__),"origin.txt")
-with open(origin_file,'w',encoding='utf-8') as f:
-    f.write("Hello,World.")
-encrypt_file = os.path.join(os.path.dirname(origin_file),"encrypt_"+os.path.basename(origin_file))
-decrypt_file = os.path.join(os.path.dirname(origin_file),"decrypt_"+os.path.basename(origin_file))
-
-UserCrypto(origin_file,encrypt_file,password="123456").encrypt()
-UserCrypto(encrypt_file,decrypt_file,password="123456").decrypt()
-
-is_delete = False
-if is_delete:
-    os.remove(origin_file)
-    os.remove(encrypt_file)
-    os.remove(decrypt_file)
+def TEST_UserCrypto(is_clean=False):
+    basedir = os.path.dirname(__file__)
+    filename = "origin.txt"
+    origin_file = os.path.join(basedir,filename)
+    with open(origin_file,'w',encoding='utf-8') as f:
+        f.write("Hello,World.")
+    encrypt_file = os.path.join(os.path.dirname(origin_file),"encrypt_"+os.path.basename(origin_file))
+    decrypt_file = os.path.join(os.path.dirname(origin_file),"decrypt_"+os.path.basename(origin_file))
+    # user_password = input("请输入密码：")
+    user_password = "kevin"
+    UserCrypto(origin_file,encrypt_file,password=user_password).encrypt()
+    UserCrypto(encrypt_file,decrypt_file,password=user_password).decrypt()
+    if is_clean:
+        os.remove(origin_file)
+        os.remove(encrypt_file)
+        os.remove(decrypt_file)
+if __name__ == '__main__':
+    input_dir = r""
+    password = "kevin"
+    # input_dir = input("请输入需要打包的文件夹完整路径：")
+    # password = input("请输入密码：")
+    father_dir ,fold_name = os.path.split(input_dir)
+    zip_file = os.path.join(father_dir,fold_name+".zip")
+    compress_dir(_input_dir=input_dir,_output_file=zip_file)
+    file_dir,file_name  = os.path.split(zip_file)
+    encrypt_file = os.path.join(file_dir,"encrypt_"+ file_name)
+    UserCrypto(in_file=zip_file,out_file=encrypt_file,password=password).encrypt()
+    decrypt_file = os.path.join(file_dir, "decrypt_" + file_name)
+    UserCrypto(in_file=encrypt_file,out_file=decrypt_file,password=password).decrypt()
