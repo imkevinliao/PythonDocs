@@ -1,17 +1,17 @@
+import hashlib
 import os.path
 import zipfile
-from hashlib import md5
 from os import urandom
 
 from Crypto.Cipher import AES
 
 
 class UserCrypto(object):
-    def __init__(self,in_file,out_file,password):
+    def __init__(self,in_file,out_file,_password):
         self.block_size = 16 # 这里可以改为 self.block_size = AES.block_size 必须是16的倍数
         self.iv_length = 16
         self.key_length = 32
-        self.password = password
+        self.password = _password
         self.in_filepath = in_file
         self.out_filepath = out_file
     def set_aes_mode(self, mode="AES-256"):
@@ -27,7 +27,8 @@ class UserCrypto(object):
     def __derive(_password, _salt, key_length, iv_length):
         d = d_i = b""
         while len(d) < (key_length + iv_length):
-            d_i = md5(d_i + str.encode(_password) + _salt).digest()  # 获取md5哈希值
+            d_i = hashlib.sha256(d_i + str.encode(_password) + _salt).digest()
+            # d_i = hashlib.md5(d_i + str.encode(_password) + _salt).digest()  # 获取md5哈希值（md5已经被破解，不安全）
             d += d_i
         return d[0:key_length], d[key_length:key_length + iv_length]
     def encrypt(self):
@@ -83,22 +84,26 @@ def TEST_UserCrypto(is_clean=False):
     decrypt_file = os.path.join(os.path.dirname(origin_file),"decrypt_"+os.path.basename(origin_file))
     # user_password = input("请输入密码：")
     user_password = "kevin"
-    UserCrypto(origin_file,encrypt_file,password=user_password).encrypt()
-    UserCrypto(encrypt_file,decrypt_file,password=user_password).decrypt()
+    UserCrypto(origin_file,encrypt_file,_password=user_password).encrypt()
+    UserCrypto(encrypt_file,decrypt_file,_password=user_password).decrypt()
     if is_clean:
         os.remove(origin_file)
         os.remove(encrypt_file)
         os.remove(decrypt_file)
-if __name__ == '__main__':
+        
+def TEST_compress_encrypt():
     input_dir = r""
     password = "kevin"
     # input_dir = input("请输入需要打包的文件夹完整路径：")
-    # password = input("请输入密码：")
+    # _password = input("请输入密码：")
     father_dir ,fold_name = os.path.split(input_dir)
     zip_file = os.path.join(father_dir,fold_name+".zip")
     compress_dir(_input_dir=input_dir,_output_file=zip_file)
     file_dir,file_name  = os.path.split(zip_file)
     encrypt_file = os.path.join(file_dir,"encrypt_"+ file_name)
-    UserCrypto(in_file=zip_file,out_file=encrypt_file,password=password).encrypt()
+    UserCrypto(in_file=zip_file,out_file=encrypt_file,_password=password).encrypt()
     decrypt_file = os.path.join(file_dir, "decrypt_" + file_name)
-    UserCrypto(in_file=encrypt_file,out_file=decrypt_file,password=password).decrypt()
+    UserCrypto(in_file=encrypt_file,out_file=decrypt_file,_password=password).decrypt()
+    
+if __name__ == '__main__':
+    TEST_UserCrypto(False)
