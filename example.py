@@ -1,4 +1,3 @@
-# 如何安全使用pickle, Python文档中指出应该只对可信的pickle数据进行解析，使用hmac保证数据安全性。
 import csv
 import hashlib
 import hmac
@@ -21,6 +20,7 @@ from lxml import etree
 
 import numpy as np
 
+# 如何安全使用pickle, Python文档中指出应该只对可信的pickle数据进行解析，使用hmac保证数据安全性。
 # pickle 安全使用方式
 secret_key = b"encrypt data"
 obj = ["demo", (1, 2), ["a", "b"]]
