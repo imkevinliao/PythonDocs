@@ -1,5 +1,4 @@
 import logging
-import sys
 
 
 class Log(logging.Logger):
@@ -12,7 +11,7 @@ class Log(logging.Logger):
     def config(self):
         formatter = logging.Formatter(fmt="%(asctime)s %(levelname)s [line:%(lineno)d] %(message)s",
                                       datefmt="%Y-%m-%d %H:%M:%S(%p)")
-        stdout_handler = logging.StreamHandler(sys.stdout)
+        stdout_handler = logging.StreamHandler()
         stdout_handler.setFormatter(formatter)
         self.addHandler(stdout_handler)
         if self.name:
