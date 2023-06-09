@@ -29,21 +29,22 @@ def file_associate(path):
     return maps
 
 
-def create_dir(path, force=False):
+def create_dir(path:str, force=False):
     """
     :param path:
     :param force: if force is true,when dir has exists, dir will be removed,then recreate dir.
     :return:
     """
     create_ok = False
+    if os.path.exists(path) and (not force): # 已经存在且不强制重新创建则直接退出
+        return None
     if os.path.exists(path) and force:
         shutil.rmtree(path)
     else:
         try:
             os.mkdir(path)
             create_ok = True
-        except Exception as e:
-            # ignore this error.
+        except Exception as e:# ignore this error.
             ...
     if not create_ok:
         os.makedirs(path)
