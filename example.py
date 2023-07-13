@@ -143,15 +143,33 @@ span = etree.SubElement(root, "img_prop")
 root.insert(root.index(span), etree.Element("hello"))
 tree.write("output_xml_path")
 
-# json 使用 indent是缩进，可以让json可读性更好，ensure_ascii是为了保证中文能正常显示
-json_filepath = ""
+"""
+json 使用 indent是缩进，可以让json可读性更好，ensure_ascii是为了保证中文能正常显示
+注意字典是支持单/双引号，而json只支持双引号
+"""
+import json
+
+json_filepath = "my.json"
+input_dict = {'one': 1, "two": {'three': ['a', 'b']}}
+json_str = json.dumps(input_dict)
+print(json_str, type(json_str))
+new_dict = json.loads(json_str)
+print(new_dict, type(new_dict))
+
+with open(json_filepath, "w", encoding="utf-8") as jsonfile:
+    # json.dumps后得到的是json_str,使用文件的写入方式写入。也可以使用json.dump直接写入
+    jsonfile.write(json.dumps(input_dict, indent=4, ensure_ascii=False))
+    # json.dump(input_dict, jsonfile, indent=4, ensure_ascii=False)
 
 
-def gen_json(code_dict: dict):
-    with open(json_filepath, "w", encoding="utf-8") as jsonfile:
-        json_str = json.dumps(code_dict, indent=4, ensure_ascii=False)
-        jsonfile.write(json_str)
+with open(json_filepath,'r') as load_f:
+    load_dict = json.load(load_f)
+    print(load_dict.get('two'))
 
+# result:
+# {"one": 1, "two": {"three": ["a", "b"]}} <class 'str'>
+# {'one': 1, 'two': {'three': ['a', 'b']}} <class 'dict'>
+# {'three': ['a', 'b']}
 
 # 关于代理
 os.environ['no_proxy'] = '*'
