@@ -336,6 +336,9 @@ pch.cpp
 """
 
 """
+# configparser 写入的数据都是string类型，所以取用时候需要自行转化数据类型，官方有提供布尔类型判断的方式，以及string对数据类型的转化
+# config 分为 section 和 键值对
+
 import configparser
 
 config = configparser.ConfigParser()
