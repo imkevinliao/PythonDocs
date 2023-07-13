@@ -335,4 +335,40 @@ pch.cpp
 --------------------------------------------------
 """
 
-configparser 是 python 提供用来处理配置文件类
+"""
+import configparser
+
+config = configparser.ConfigParser()
+config['DEFAULT'] = {'ServerAliveInterval': '45',
+                     'Compression': 'yes',
+                     'CompressionLevel': '9'}
+
+config.read_dict({'section1': {'key1': 'value1',
+                               'key2': 'value2',
+                               'key3': 'value3'},
+                  'section2': {'keyA': 'valueA',
+                               'keyA': 'valueAA', # 键名字如果重复，后面的会覆盖前面的
+                               'keyC': 'valueC'},
+                  'section3': {'foo': 'x',
+                               'bar': 'y',
+                               'baz': 'z'}
+})
+
+config["User"]={}
+config["User"]["ua"] = "uname_a"
+config["User"]["ub"] = "uname_b"
+config["User"]["uc"] = "uname_c"
+config["User"]["Compression"] = "no"
+print(config["User"].get("ua"))
+print(config["User"]["ua"])
+print(config["User"].get("UB")) # 注意 section 区分大小写，但是键值对不区分大小写
+
+config_name = "config.ini"
+with open(config_name,"w",encoding="utf-8") as f:
+    config.write(f)
+
+
+another_config = configparser.ConfigParser()
+another_config.read(config_name)
+print(another_config["User"]["UC"])
+"""
