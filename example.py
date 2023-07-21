@@ -394,3 +394,24 @@ another_config = configparser.ConfigParser()
 another_config.read(config_name)
 print(another_config["User"]["UC"])
 """
+
+# opencv 
+"""
+关于opencv这个模块，最好的方式是禁止中文路径
+
+目前读取图片如果存在中文路径（是完整路径中，不单单是图片所在的文件夹）有方法读取，但是可能会失败，不能保证必定成功
+
+保存图片存在中文路径可以使用下列方式解决
+
+def save_bgr(filepath, bgr):
+    _, ext = os.path.splitext(filepath)
+    cv2.imencode(ext, bgr)[1].tofile(filepath)  # 解决中文路径无法保存问题
+
+
+src_path = r"/home/ubuntu/sky.jpg"
+dst_path = r"/home/ubuntu/sky.png"
+img = cv2.imread(src_path, cv2.IMREAD_COLOR)
+
+cv2.imwrite(dst_path, img) # 常规保存方法
+save_bgr(dst_path, img) # 支持中文路径保存
+"""
