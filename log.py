@@ -20,11 +20,11 @@ class Log(logging.Logger):
             self.addHandler(file_handler)
 """
 logger = logging.getLogger("log_module_name")
-logger.setLevel(logging.DEBUG)
+
 formatter = logging.Formatter(fmt="%(asctime)s %(levelname)s [line:%(lineno)d] %(message)s", datefmt="%Y-%m-%d %H:%M:%S(%p)")
 stdout_handler = logging.StreamHandler()
 stdout_handler.setFormatter(formatter)
-stdout_handler.setLevel(logging.ERROR)
+stdout_handler.setLevel(logging.DEBUG)
 logger.addHandler(stdout_handler)
 file_handler = logging.FileHandler(filename="log.txt", encoding='utf-8', mode="a+")
 file_handler.setFormatter(formatter)
