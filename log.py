@@ -19,19 +19,19 @@ class Log(logging.Logger):
             file_handler.setFormatter(formatter)
             self.addHandler(file_handler)
 """
-logger = logging.getLogger("log_module_name")
+log = logging.getLogger("log_module_name")
 
 formatter = logging.Formatter(fmt="%(asctime)s %(levelname)s [line:%(lineno)d] %(message)s", datefmt="%Y-%m-%d %H:%M:%S(%p)")
 stdout_handler = logging.StreamHandler()
 stdout_handler.setFormatter(formatter)
 stdout_handler.setLevel(logging.DEBUG)
-logger.addHandler(stdout_handler)
+log.addHandler(stdout_handler)
 file_handler = logging.FileHandler(filename="log.txt", encoding='utf-8', mode="a+")
 file_handler.setFormatter(formatter)
 file_handler.setLevel(logging.NOTSET)
-logger.addHandler(file_handler)
+log.addHandler(file_handler)
 
-logger.debug("hello,debug")
-logger.error("hello,error")
-logger.info("hello,info")
+log.debug("hello,debug")
+log.error("hello,error")
+log.info("hello,info")
 """
