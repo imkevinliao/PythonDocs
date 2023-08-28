@@ -5,4 +5,4 @@
 
 造轮子的目的就是为了更好的使用同类轮子
 
-PyDocs[./PyDocs.md]
+PyDocs(./PyDocs.md)
