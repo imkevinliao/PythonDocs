@@ -22,6 +22,9 @@ from lxml import etree
 import numpy as np
 
 # --------------------------------------------------------------
+"""
+协程的两种使用方式，主要在于获取协程的执行结果
+"""
 # 协程 协程的使用 asyncio
 async def user_coroutine(task_id,user):
     print(f"user:{user}, current run {task_id}")
@@ -33,7 +36,7 @@ async def user_coroutine(task_id,user):
 
 
 # 如果所有协程中有一个协程出现异常，无法获取剩余协程的返回值，所以这种写法适用于无需结果的情况
-async def main():
+async def asyncio_main():
     coros = []
     for i in range(10):
         coros.append(user_coroutine(i,"kevin"))
@@ -49,7 +52,7 @@ async def main():
     except Exception as e:
         print('Got an exception:', e)
         
-async def main2():
+async def asyncio_main2():
     tasks = []
     for i in range(10):
         task = user_coroutine(i,"jack")
@@ -62,9 +65,9 @@ async def main2():
         else:
             print(f"Result:{result}")
 
-asyncio.run(main())
+asyncio.run(asyncio_main())
 print(f"{'='*30}")
-asyncio.run(main2())
+asyncio.run(asyncio_main2())
 # ----------------------------------------------------------------------
 
 # 路径统一格式 格式化路径
