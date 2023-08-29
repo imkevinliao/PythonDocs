@@ -1,3 +1,4 @@
+import asyncio
 import csv
 import hashlib
 import hmac
@@ -20,7 +21,53 @@ from lxml import etree
 
 import numpy as np
 
-# Python路径统一格式 格式化路径
+# --------------------------------------------------------------
+# 协程 协程的使用 asyncio
+async def user_coroutine(task_id,user):
+    print(f"user:{user}, current run {task_id}")
+    await asyncio.sleep(1)
+    if task_id == 0:
+        raise Exception("generate error, simulation program is abnormal.")
+    print(f"user:{user}, current run {task_id} done.")
+    return task_id,user
+
+
+# 如果所有协程中有一个协程出现异常，无法获取剩余协程的返回值，所以这种写法适用于无需结果的情况
+async def main():
+    coros = []
+    for i in range(10):
+        coros.append(user_coroutine(i,"kevin"))
+    try:
+        # 通过设置 return_exceptions = True 来避免因为单个协程异常导致其他正常执行的协程无法获取返回值的情况
+        # 如果需要使用返回值则需要对返回值进行判断，因为异常被作为函数执行的返回值
+        results = await asyncio.gather(*coros,return_exceptions=True)
+        for result in results:
+            if not isinstance(result, BaseException):
+                print(f"Result:{result}")
+            else:
+                print(result)
+    except Exception as e:
+        print('Got an exception:', e)
+        
+async def main2():
+    tasks = []
+    for i in range(10):
+        task = user_coroutine(i,"jack")
+        tasks.append(task)
+    for single_coroutine in asyncio.as_completed(tasks):
+        try:
+            result = await single_coroutine
+        except Exception as e:
+            print('Got an exception:', e)
+        else:
+            print(f"Result:{result}")
+
+asyncio.run(main())
+print(f"{'='*30}")
+asyncio.run(main2())
+# ----------------------------------------------------------------------
+
+# 路径统一格式 格式化路径
 import os.path
 
 abspath = r"D:\Github\Code\Test\demo.py"
