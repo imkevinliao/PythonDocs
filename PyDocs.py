@@ -20,6 +20,28 @@ from lxml import etree
 
 import numpy as np
 
+# Python路径统一格式 格式化路径
+import os.path
+
+abspath = r"D:\Github\Code\Test\demo.py"
+relpath = r'../../Folder/file'
+
+normal_connect = os.path.join(abspath,relpath)
+modify_connect = os.path.normpath(normal_connect)
+modify_connect_case = os.path.normcase(modify_connect)
+
+print(f"绝对路径:{abspath}, 相对路径:{relpath}")
+print(f"常规join直接拼接:{normal_connect}")
+print(f"相对路径转化为绝对路径，以及路径分隔符统一格式:{modify_connect}")
+print(f"路径全小写:{modify_connect_case}")
+"""
+输出结果：
+绝对路径:D:\Github\Code\Test\demo.py, 相对路径:../../Folder/file
+常规join直接拼接:D:\Github\Code\Test\demo.py\../../Folder/file
+相对路径转化为绝对路径，以及路径分隔符统一格式:D:\Github\Code\Folder\file
+路径全小写:d:\github\code\folder\file
+"""
+
 # 如何安全使用pickle, Python文档中指出应该只对可信的pickle数据进行解析，使用hmac保证数据安全性。
 # pickle 安全使用方式
 secret_key = b"encrypt data"
