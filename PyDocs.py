@@ -475,10 +475,12 @@ IDE无法提示的问题：
 
 关于opencv这个模块，最好的方式是禁止中文路径
 
-目前读取图片如果存在中文路径（是完整路径中，不单单是图片所在的文件夹）有方法读取，但是可能会失败，不能保证必定成功
+读取图片如果存在中文路径有方法读取，但是可能会失败，不能保证必定成功
+img_rgb = cv2.imdecode(np.fromfile(rgb_path, dtype=np.uint8), -1)
+img_bgr = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2BGR)
+
 
 保存图片存在中文路径可以使用下列方式解决
-
 def save_bgr(filepath, bgr):
     _, ext = os.path.splitext(filepath)
     cv2.imencode(ext, bgr)[1].tofile(filepath)  # 解决中文路径无法保存问题
