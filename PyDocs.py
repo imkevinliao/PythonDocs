@@ -469,6 +469,10 @@ print(another_config["User"]["UC"])
 
 # opencv 
 """
+IDE无法提示的问题：
+1. 安装较低版本的opencv-python
+2. import cv2.cv2 as cv2
+
 关于opencv这个模块，最好的方式是禁止中文路径
 
 目前读取图片如果存在中文路径（是完整路径中，不单单是图片所在的文件夹）有方法读取，但是可能会失败，不能保证必定成功
