@@ -19,6 +19,7 @@ class Log(logging.Logger):
             file_handler.setFormatter(formatter)
             self.addHandler(file_handler)
 """
+# 标准输出和文件输出
 log = logging.getLogger("module name")
 log.setLevel(logging.DEBUG)
 formatter = logging.Formatter(fmt="%(asctime)s %(levelname)s [line:%(lineno)d] %(message)s", datefmt="%Y-%m-%d %H:%M:%S(%p)")
