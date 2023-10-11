@@ -4,7 +4,7 @@ import subprocess
 from os.path import join
 
 
-def file_associate(path):
+def file_associate(path:str):
     """
     path是一个文件夹，
     该文件夹下包含若干个子文件夹，每个子文件夹中有同样个数的文件（strict=True 模式下必须一致，否则报错）
@@ -66,7 +66,7 @@ def delete_dirs(path):
         delete_dir(p)
 
 
-def file_helper(path):
+def file_helper(path:str):
     """
     输入文件夹路径：
     返回两个list：所有文件，所有文件夹
@@ -84,9 +84,9 @@ def file_helper(path):
     return dirs, files
 
 
-def get_files(path, suffix=None):
+def get_files(path:str, suffix=None):
     """
-    suffix 可以指定或获取某个类型的文件，如 suffix = ".bmp", suffix = ".mp4", 将返回带该后缀的文件名
+    获取指定路径下所有文件，可指定文件拓展名类型进行筛选 如 suffix = ".bmp", suffix = ".mp4"
     :param path:
     :param suffix:
     :return:
@@ -99,7 +99,7 @@ def get_files(path, suffix=None):
     return files
 
 
-def get_dirs(path):
+def get_dirs(path:str):
     dirs, _ = file_helper(path)
     return dirs
 
