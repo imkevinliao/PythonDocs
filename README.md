@@ -5,7 +5,8 @@
 
 # 专栏
 * numpy [https://blog.csdn.net/qq_41133428/article/details/127228800]
-* [opencv-python](./专栏/opencv-python.md)
+* opencv [opencv-python](./专栏/opencv-python.md)
+* pandas [pandas](./专栏/pandas.md)
 
 # 链接
 Python配置[https://github.com/imkevinliao/UbuntuDocs/blob/master/markdown/python.md]
