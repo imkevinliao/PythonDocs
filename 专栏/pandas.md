@@ -23,3 +23,19 @@ for index, row in df.iterrows():
     ...
 ```
 数据转换：Series -> List `row.tolist()`
+
+定位数据：<https://zhuanlan.zhihu.com/p/129898162>
+```
+loc,iloc,ix
+df.loc[行索引范围,列索引范围]
+df.iloc[行索引范围,列索引范围]
+df.loc[行索引范围,列索引范围]
+```
+以 df.iloc 举例：
+```
+如果想选取所有行，选取部分列，应该是 
+df.iloc[:,[2,4]]
+df.iloc[:,0:3]
+```
+
+
