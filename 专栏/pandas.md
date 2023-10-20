@@ -27,6 +27,10 @@ for index, row in df.iterrows():
 定位数据：<https://zhuanlan.zhihu.com/p/129898162>
 ```
 loc,iloc,ix
+loc:通过标签来进行定位，这意味着必须有标签
+iloc:通过索引值来定位，即定位列表采用的方式
+（ix是综合loc和iloc最先产生的，但是后面被loc，iloc取代，被弃用了）
+
 df.loc[行索引范围,列索引范围]
 df.iloc[行索引范围,列索引范围]
 df.loc[行索引范围,列索引范围]
