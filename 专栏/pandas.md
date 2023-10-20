@@ -24,6 +24,8 @@ for index, row in df.iterrows():
 ```
 数据转换：Series -> List `row.tolist()`
 
+日期转换:`df["日期"] = pd.to_datetime(df["日期"])`
+
 定位数据：<https://zhuanlan.zhihu.com/p/129898162>
 ```
 loc,iloc,ix
@@ -41,5 +43,4 @@ df.loc[行索引范围,列索引范围]
 df.iloc[:,[2,4]]
 df.iloc[:,0:3]
 ```
-
 
