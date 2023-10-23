@@ -7,6 +7,7 @@
 * numpy [https://blog.csdn.net/qq_41133428/article/details/127228800]
 * opencv [opencv-python](./专栏/opencv-python.md)
 * pandas [pandas](./专栏/pandas.md)
+* matplotlib [matplotlib](./专栏/matplotlib.md)
 
 # 链接
 Python配置[https://github.com/imkevinliao/UbuntuDocs/blob/master/markdown/python.md]
