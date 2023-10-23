@@ -13,9 +13,12 @@ header=1 表示将第二行数据视为表头，注意此时 Excel 第一行数�
 ```
 关于遍历：
 
-DataFrame.iterrows()	按行顺序优先，接着依次按列迭代
-DataFrame.iteritems()	按列顺序优先，接着依次按行迭代
-DataFrame.itertuples()	按行顺序优先，接着依次按列迭代
+DataFrame.iterrows() 按行顺序优先，接着依次按列迭代
+
+DataFrame.iteritems() 按列顺序优先，接着依次按行迭代
+
+DataFrame.itertuples() 按行顺序优先，接着依次按列迭代
+
 
 ```python
 for index, row in df.iterrows():
