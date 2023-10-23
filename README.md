@@ -10,4 +10,4 @@
 * matplotlib [matplotlib](./专栏/matplotlib.md)
 
 # 链接
-Python配置[https://github.com/imkevinliao/UbuntuDocs/blob/master/markdown/python.md]
+Python 配置 <https://github.com/imkevinliao/UbuntuDocs/blob/master/markdown/python.md>
