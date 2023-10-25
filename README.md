@@ -8,6 +8,7 @@
 * opencv [opencv-python](./专栏/opencv-python.md)
 * pandas [pandas](./专栏/pandas.md)
 * matplotlib [matplotlib](./专栏/matplotlib.md)
+* subprocess <https://github.com/imkevinliao/UbuntuDocs/blob/master/shell/shell.py>
 
 # 链接
 Python 配置 <https://github.com/imkevinliao/UbuntuDocs/blob/master/markdown/python.md>
