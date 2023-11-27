@@ -9,10 +9,10 @@
 * opencv [opencv-python](./专栏/opencv-python.md)
 * pandas [pandas](./专栏/pandas.md)
 * matplotlib [matplotlib](./专栏/matplotlib.md)
+* lxml [lxml](./专栏/lxml.md)
 * subprocess <https://github.com/imkevinliao/UbuntuDocs/blob/master/shell/shell.py>
 ---
 * numpy <https://blog.csdn.net/qq_41133428/article/details/127228800>
-* lxml <https://blog.csdn.net/qq_41133428/article/details/127067956>
 * selenium <https://blog.csdn.net/qq_41133428/article/details/128086763>
 * regex <https://blog.csdn.net/qq_41133428/article/details/128019468>
 
