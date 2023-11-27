@@ -13,6 +13,18 @@ filepath = ""
 tree = etree.parse(filepath)
 root = tree.getroot()
 print(root.tag)
+
+xml = '<a xmlns="test"><b xmlns="test"/></a>'
+tree = etree.parse(StringIO(xml))
+root = etree.fromstring(xml)
+
+broken_html = "<html><head><title>test<body><h1>page title</h3>"
+parser = etree.HTMLParser()
+tree   = etree.parse(StringIO(broken_html), parser)
+result = etree.tostring(tree.getroot(), pretty_print=True, method="html")
+
+html = etree.HTML(broken_html)
+result = etree.tostring(html, pretty_print=True, method="html")
 ```
 ---
 这里需要重点强调几个地方：
