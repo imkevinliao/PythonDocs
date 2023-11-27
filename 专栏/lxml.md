@@ -86,7 +86,7 @@ print(root.find(".//body/h1").attrib['style'])
 
 这里需要说明，for i in iter 这种形式只能查找该标签下的子元素，不能迭代孙元素。
 
-如果需要获取某个 node 下的所有子节点，应该使用 elements.iter() 作为迭代对象
+如果需要获取某个 node 下的所有子节点，应该使用 root.iter() 作为迭代对象
 ```
 elements = root.find(xpath)
 if elements is not None:
