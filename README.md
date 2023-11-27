@@ -6,10 +6,10 @@
 当时把一些文章写到了 csdn 上，应该写在这里的，方便自己随时更新补。自由是有代价的，当时的想法，与现在的想法还是有些不同了。
 
 # 专栏
-* opencv [opencv-python](./专栏/opencv-python.md)
-* pandas [pandas](./专栏/pandas.md)
-* matplotlib [matplotlib](./专栏/matplotlib.md)
-* lxml [lxml](./专栏/lxml.md)
+* [opencv-python](./专栏/opencv-python.md)
+* [pandas](./专栏/pandas.md)
+* [matplotlib](./专栏/matplotlib.md)
+* [lxml](./专栏/lxml.md)
 * subprocess <https://github.com/imkevinliao/UbuntuDocs/blob/master/shell/shell.py>
 ---
 * numpy <https://blog.csdn.net/qq_41133428/article/details/127228800>
