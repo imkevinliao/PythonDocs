@@ -35,6 +35,7 @@ plt.figure(figsize=(1920/100,1080/100))
 plt.imshow(image)
 
 # 设置时间刻度
+from matplotlib import pyplot as plt, dates
 ax = plt.subplot(212)
 plt.title(title_text, color="k")
 plt.plot(data_x,data_y, color="b")
