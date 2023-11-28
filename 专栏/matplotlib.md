@@ -29,4 +29,21 @@ axs[2].scatter(x_data,y_data,alpha=overlapping,color='g',label="third")
 
 plt.savefig(image_path,dpi=400)
 plt.close()
+
+
+plt.figure(figsize=(1920/100,1080/100))
+plt.imshow(image)
+
+# 设置时间刻度
+ax = plt.subplot(212)
+plt.title(title_text, color="k")
+plt.plot(data_x,data_y, color="b")
+ax.text(0.02, 0.9, c="b", s="string",transform=ax.transAxes)
+user_data = data.tail(data_counts)
+formatter = dates.DateFormatter("%d")
+user_interval = dates.DayLocator(interval=1)
+formatter = dates.DateFormatter("%m")
+user_interval = dates.MonthLocator(interval=1)
+ax.xaxis.set_major_formatter(formatter)
+ax.xaxis.set_major_locator(user_interval)
 ```
