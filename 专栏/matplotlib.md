@@ -9,3 +9,24 @@ pass
 plt.rcParams["font.sans-serif"] = ["SimHei"]  # 设置字体
 plt.rcParams["axes.unicode_minus"] = False  # 该语句解决图像中的“-”负号的乱码问题
 ```
+```
+fig, axs = plt.subplots(3, sharex=True, sharey=False)
+fig.suptitle(f'title')
+fig.supxlabel('xlabel')
+fig.supylabel('ylabel')
+x_ticks = 5
+axs[0].hist(data,bins=int(len_max/x_ticks), range=x_range,color="red",label="first")
+axs[0].hist(data,bins=int(len_max/x_ticks), range=x_range,color="red",label="second")
+axs[0].hist(data,bins=int(len_max/x_ticks), range=x_range,color="red",label="third")
+axs[0].legend(loc="best")
+axs[1].legend(loc="best")
+axs[2].legend(loc="best")
+
+overlapping = 0.7
+axs[0].scatter(x_data,y_data,alpha=overlapping,color='r',label="first")
+axs[1].scatter(x_data,y_data,alpha=overlapping,color='y',label="second")
+axs[2].scatter(x_data,y_data,alpha=overlapping,color='g',label="third")
+
+plt.savefig(image_path,dpi=400)
+plt.close()
+```
