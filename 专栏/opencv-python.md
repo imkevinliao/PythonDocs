@@ -22,5 +22,8 @@ def opencv_save(filepath, image):
     cv2.imencode(ext, image)[1].tofile(filepath)
 
 # 注意这种方式读取的图片是 rgb 格式，opencv 默认是 bgr 格式
-image = cv2.imdecode(np.fromfile(path, dtype=np.uint8), flags=cv2.IMREAD_COLOR) 
+image = cv2.imdecode(np.fromfile(path, dtype=np.uint8), flags=cv2.IMREAD_COLOR)
+
+# rgb2bgr
+cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 ```
