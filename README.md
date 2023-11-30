@@ -16,6 +16,7 @@
 * numpy <https://blog.csdn.net/qq_41133428/article/details/127228800>
 * selenium <https://blog.csdn.net/qq_41133428/article/details/128086763>
 * regex <https://blog.csdn.net/qq_41133428/article/details/128019468>
-
+# 问题
+* [windows路径问题](./other/windows路径过长问题.md)
 # 链接
 Python 配置 <https://github.com/imkevinliao/UbuntuDocs/blob/master/markdown/python.md>
