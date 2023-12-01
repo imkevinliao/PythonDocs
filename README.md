@@ -1,22 +1,20 @@
-# 零散记录
+# 集锦
 [PyDocs](./PyDocs.py)
-# 魔法
-尝试去造轮子，造轮子的结果没有意义，但是却可以让我们学习到很多东西，以及提高自身对优秀轮子的鉴赏能力，这就是造轮子的意义，不问结果，但求通达
-
-当时把一些文章写到了 csdn 上，应该写在这里的，方便自己随时更新补。自由是有代价的，当时的想法，与现在的想法还是有些不同了。
-
 # 专栏
 * [opencv-python](./专栏/opencv-python.md)
 * [pandas](./专栏/pandas.md)
 * [matplotlib](./专栏/matplotlib.md)
 * [lxml](./专栏/lxml.md)
-
 ---
 * subprocess <https://github.com/imkevinliao/UbuntuDocs/blob/master/shell/shell.py>
 * numpy <https://blog.csdn.net/qq_41133428/article/details/127228800>
 * selenium <https://blog.csdn.net/qq_41133428/article/details/128086763>
 * regex <https://blog.csdn.net/qq_41133428/article/details/128019468>
+* crypto <https://blog.csdn.net/qq_41133428/article/details/127843317>
 # 问题
 * [windows路径问题](./other/windows路径过长问题.md)
-# 链接
-Python 配置 <https://github.com/imkevinliao/UbuntuDocs/blob/master/markdown/python.md>
+* [Python 配置] <https://github.com/imkevinliao/UbuntuDocs/blob/master/markdown/python.md>
+# 后记
+造轮子的结果是没有意义的，但造轮子的过程是极其宝贵的
+
+造轮子的目的是深刻体会轮子创造者的设计思考，为了今后更好理解各类轮子，你只管去造轮子，因为这个过程让你更强大
