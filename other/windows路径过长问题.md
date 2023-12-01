@@ -7,7 +7,7 @@
 1. win32api.GetShortPathName 实测没什么用处
 2. 使用 os.chdir() + 操作文件名 实测没什么用处 
 3. 绝对路径前加 r'\\?\'
-4. 对于共享路径 r'\\share\www\demo' -> r'\\?\UNC\share\www\demo'
+4. 对于共享路径 ` r'\\share\www\demo' -> r'\\?\UNC\share\www\demo' `
 
 给我放弃 windows 又增加了一个理由
 
