@@ -13,7 +13,7 @@
 * crypto <https://blog.csdn.net/qq_41133428/article/details/127843317>
 # 问题
 * [windows路径问题](./other/windows路径过长问题.md)
-* [Python 配置] <https://github.com/imkevinliao/UbuntuDocs/blob/master/markdown/python.md>
+* <https://github.com/imkevinliao/UbuntuDocs/blob/master/markdown/python.md>(Python 配置)
 # 后记
 造轮子的结果是没有意义的，但造轮子的过程是极其宝贵的
 
