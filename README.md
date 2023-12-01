@@ -1,5 +1,5 @@
 # 集锦
-[PyDocs](./PyDocs.py)
+[PyDocs](./PyDocs.py) (零散知识的记录)
 # 专栏
 * [opencv-python](./专栏/opencv-python.md)
 * [pandas](./专栏/pandas.md)
