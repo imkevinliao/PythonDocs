@@ -7,6 +7,7 @@
 * [matplotlib](./专栏/matplotlib.md)
 * [lxml](./专栏/lxml.md)
 * [sqlalchemy](./专栏/sqlalchemy.md)
+* [selenium](./专栏/selenium.md)
 ---
 * subprocess <https://github.com/imkevinliao/UbuntuDocs/blob/master/shell/shell.py>
 * numpy <https://blog.csdn.net/qq_41133428/article/details/127228800>
