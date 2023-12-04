@@ -45,4 +45,5 @@ print('optional_arg 值:', args.optional_arg)
 print('flag 值:', args.flag)
 print('number_list 值:', args.number_list)
 # python main.py -arg1 11 --number_list 11 22 33  --flag
+# python main.py --help
 ```
