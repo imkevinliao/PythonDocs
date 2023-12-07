@@ -47,8 +47,10 @@ element = driver.find_element(By.XPATH, '//*[@id="kw"]')
 element.send_keys("hello selenium")
 driver.find_element(By.XPATH, '//*[@id="su"]').click()
 
+# js 进行点击
 click_element = driver.find_element(By.XPATH, '//*[@id="su"]')
 driver.execute_script("arguments[0].click();", click_element)
 
-ActionChains(driver).click(click_element).perform() # 模拟鼠标
+# 模拟鼠标 进行点击
+ActionChains(driver).click(click_element).perform() 
 ```
