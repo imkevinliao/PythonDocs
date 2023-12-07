@@ -5,7 +5,7 @@ from selenium.webdriver.edge.options import Options
 from selenium.webdriver.edge.service import Service
 ```
 
-配置
+driver 配置
 ```
 """
 可自行配置下载路径
