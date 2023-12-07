@@ -61,3 +61,36 @@ print('number_list 值:', args.number_list)
 # python main.py -arg1 11 --number_list 11 22 33  --flag
 # python main.py --help
 ```
+# zipfile
+```python
+import zipfile
+def zip_dir(src, dst):
+    """
+    压缩指定文件夹
+    :param src:目标文件夹路径
+    :param dst: 压缩后的保存路径(带上文件名及后缀):/home/ubuntu/test.zip
+    :return:
+    """
+    # fold_name = os.path.dirname(src)
+    zip_inst = zipfile.ZipFile(dst, 'w', zipfile.ZIP_DEFLATED)
+    for root, dirs, files in os.walk(src):
+        # fpath = root.replace(fold_name, "")
+        fpath = root.replace(src,"")
+        for file in files:
+            temp_src = os.path.join(root, file)
+            temp_dst = os.path.join(fpath, file)
+            zip_inst.write(temp_src, temp_dst)
+    zip_inst.close()
+
+def unzip_dir(src, dst):
+    """
+    解压文件夹
+    :param src: 压缩的zip文件
+    :param dst: 解压后的文件夹路径
+    :return:
+    """
+    with zipfile.ZipFile(src, 'r') as f:
+        if not os.path.exists(dst):
+            os.makedirs(dst)
+        f.extractall(dst)
+```
