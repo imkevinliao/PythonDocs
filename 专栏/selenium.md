@@ -52,5 +52,10 @@ click_element = driver.find_element(By.XPATH, '//*[@id="su"]')
 driver.execute_script("arguments[0].click();", click_element)
 
 # 模拟鼠标 进行点击
-ActionChains(driver).click(click_element).perform() 
+ActionChains(driver).click(click_element).perform()
+
+images = element.find_elements(By.XPATH,'.//img')
+image_links = [image.get_attribute("src") for image in images]
+
+content = element.text
 ```
