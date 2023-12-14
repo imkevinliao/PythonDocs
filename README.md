@@ -1,7 +1,8 @@
 # 集锦
 [PyDocs](./PyDocs.py) (零散知识的记录)
 # 专栏
-* [标准库](./专栏/stand.md)
+* [standard library](./专栏/stand.md)
+--------------------------------------
 * [lxml](./专栏/lxml.md)
 * [matplotlib](./专栏/matplotlib.md)
 * [opencv-python](./专栏/opencv-python.md)
