@@ -1,5 +1,5 @@
 # 集锦
-[PyDocs](./PyDocs.py) (零散知识的记录)
+[PyDocs](./column/PyDocs.py) (零散知识的记录)
 # 专栏
 * [standard library](./column/stand.md) 标准库指导
 --------------------------------------
