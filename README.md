@@ -1,7 +1,7 @@
 # 集锦
 [PyDocs](./PyDocs.py) (零散知识的记录)
 # 专栏
-* [standard library](./column/stand.md)
+* [standard library](./column/stand.md) 标准库指导
 --------------------------------------
 * [crypto](./column/crypto.md)
 * [lxml](./column/lxml.md)
