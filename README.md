@@ -3,6 +3,7 @@
 # 专栏
 * [standard library](./专栏/stand.md)
 --------------------------------------
+* [crpto](./专栏/crypto.md)
 * [lxml](./专栏/lxml.md)
 * [matplotlib](./专栏/matplotlib.md)
 * [opencv-python](./专栏/opencv-python.md)
