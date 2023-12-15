@@ -1,15 +1,15 @@
 # 集锦
 [PyDocs](./PyDocs.py) (零散知识的记录)
 # 专栏
-* [standard library](./专栏/stand.md)
+* [standard library](./column/stand.md)
 --------------------------------------
-* [crypto](./专栏/crypto.md)
-* [lxml](./专栏/lxml.md)
-* [matplotlib](./专栏/matplotlib.md)
-* [opencv-python](./专栏/opencv-python.md)
-* [pandas](./专栏/pandas.md)
-* [sqlalchemy](./专栏/sqlalchemy.md)
-* [selenium](./专栏/selenium.md)
+* [crypto](./column/crypto.md)
+* [lxml](./column/lxml.md)
+* [matplotlib](./column/matplotlib.md)
+* [opencv-python](./column/opencv-python.md)
+* [pandas](./column/pandas.md)
+* [sqlalchemy](./column/sqlalchemy.md)
+* [selenium](./column/selenium.md)
 ---
 * subprocess <https://github.com/imkevinliao/UbuntuDocs/blob/master/shell/shell.py>
 * numpy <https://blog.csdn.net/qq_41133428/article/details/127228800>
