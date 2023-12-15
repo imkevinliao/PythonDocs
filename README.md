@@ -3,7 +3,7 @@
 # 专栏
 * [standard library](./专栏/stand.md)
 --------------------------------------
-* [crpto](./专栏/crypto.md)
+* [crypto](./专栏/crypto.md)
 * [lxml](./专栏/lxml.md)
 * [matplotlib](./专栏/matplotlib.md)
 * [opencv-python](./专栏/opencv-python.md)
@@ -13,9 +13,7 @@
 ---
 * subprocess <https://github.com/imkevinliao/UbuntuDocs/blob/master/shell/shell.py>
 * numpy <https://blog.csdn.net/qq_41133428/article/details/127228800>
-* selenium <https://blog.csdn.net/qq_41133428/article/details/128086763>
 * regex <https://blog.csdn.net/qq_41133428/article/details/128019468>
-* crypto <https://blog.csdn.net/qq_41133428/article/details/127843317>
 * scrapy <https://imkevinliao.github.io/post/scrapy_code_review/>
 # 问题
 * [windows 路径过长](./other/windows路径过长问题.md)
