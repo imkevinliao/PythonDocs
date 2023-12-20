@@ -7,6 +7,7 @@
 * [matplotlib](./column/matplotlib.md)
 * [opencv-python](./column/opencv-python.md)
 * [pandas](./column/pandas.md)
+* [pyside](./column/pyside.md)
 * [sqlalchemy](./column/sqlalchemy.md)
 * [selenium](./column/selenium.md)
 ---
