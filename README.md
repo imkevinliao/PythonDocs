@@ -5,6 +5,7 @@
 * [crypto](./column/crypto.md)
 * [lxml](./column/lxml.md)
 * [matplotlib](./column/matplotlib.md)
+* [numpy](./column/numpy.md)
 * [opencv-python](./column/opencv-python.md)
 * [pandas](./column/pandas.md)
 * [pyside](./column/pyside.md)
