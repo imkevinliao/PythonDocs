@@ -1,3 +1,22 @@
+# configparser
+```
+config = configparser.ConfigParser()
+# filepath 路径禁止中文
+filepath = ""
+config.read(filepath)
+
+for section in config.sections():
+    print(section)
+    for key, value in config.items(section):
+        print(key, value)
+
+value1 = config.get('Section', 'Key')
+print(value1)
+
+config.set("Section","Key","new_value")
+with open (filepath, 'w') as f:
+    config.write(f)
+```
 # csv
 ```python
 import csv
