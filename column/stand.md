@@ -16,6 +16,18 @@ print(value1)
 config.set("Section","Key","new_value")
 with open (filepath, 'w') as f:
     config.write(f)
+# ---------------------------------------------
+import configparser
+
+# Create a ConfigParser object
+config = configparser.ConfigParser()
+
+# Add sections and keys with values
+config['section_name'] = {'key_name': 'value'}
+
+# Write to the INI file
+with open('example.ini', 'w') as configfile:
+    config.write(configfile)
 ```
 # csv
 ```python
