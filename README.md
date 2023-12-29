@@ -13,7 +13,6 @@
 * [selenium](./column/selenium.md)
 ---
 * subprocess <https://github.com/imkevinliao/UbuntuDocs/blob/master/shell/shell.py>
-* numpy <https://blog.csdn.net/qq_41133428/article/details/127228800>
 * regex <https://blog.csdn.net/qq_41133428/article/details/128019468>
 * scrapy <https://imkevinliao.github.io/post/scrapy_code_review/>
 # 问题
