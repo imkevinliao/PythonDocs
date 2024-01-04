@@ -1,4 +1,4 @@
-[PyDocs](./column/stand.md) (零散知识的记录)
+[PyDocs](./markdown/PyDoc.py) (零散知识的记录)
 # 专栏
 * [standard library](./column/stand.md) 标准库指导
 --------------------------------------
