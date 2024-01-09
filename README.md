@@ -3,6 +3,7 @@
 * [standard library](./column/stand.md) 标准库指导
 --------------------------------------
 * [crypto](./column/crypto.md)
+* [fastapi](./column/fastapi.md)
 * [lxml](./column/lxml.md)
 * [matplotlib](./column/matplotlib.md)
 * [numpy](./column/numpy.md)
