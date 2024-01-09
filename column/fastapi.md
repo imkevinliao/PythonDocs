@@ -21,3 +21,8 @@ def read_item(item_id: int, q: Union[str, None] = None):
 if __name__ == '__main__':
     uvicorn.run(app, host="127.0.0.1",port=8000)
 ```
+# 提高计划
+```
+# 为了防止出现安全问题，关闭所有的的接口文档（docs 和 redoc 都要关闭）
+app = FastAPI(docs_url=None, redoc_url=None)
+```
