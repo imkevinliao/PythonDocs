@@ -24,5 +24,6 @@ if __name__ == '__main__':
 # 提高计划
 ```
 # 为了防止出现安全问题，关闭所有的的接口文档（docs 和 redoc 都要关闭）
+# openapi_url=None openapi.json也可以获取接口信息
 app = FastAPI(docs_url=None, redoc_url=None)
 ```
