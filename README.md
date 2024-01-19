@@ -1,6 +1,6 @@
 # 遗迹珍宝
-[PyDocs](./markdown/PyDocs.py) (零散知识的记录)
-[ChatGPT](./markdown/ChatGPT.md)
+- [PyDocs](./markdown/PyDocs.py) (零散知识的记录)
+- [ChatGPT](./markdown/ChatGPT.md)
 # 专栏
 * [standard library](./column/stand.md) 标准库指导
 --------------------------------------
