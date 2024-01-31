@@ -1,6 +1,6 @@
 # 遗迹珍宝
 - [PyDocs](./markdown/PyDocs.py) (零散知识的记录)
-- [Pycharm Git Ignore](./markdown/.gitignore.md)
+- [Pycharm Git Ignore](./markdown/.gitignore)
 - [ChatGPT](./markdown/ChatGPT.md)
 # 专栏
 * [standard library](./column/stand.md) 标准库指导
