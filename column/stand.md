@@ -1,7 +1,31 @@
 # configparser
 ```
+def example():
+    filepath = None
+    config = configparser.ConfigParser()
+    config.read(filepath,encoding='utf8')
+    if not config.has_section("user"):
+        config.add_section("user")
+    config.set("user", "kevin", "18")
+    config.set("user","natalia","20")
+    if not config.has_section("animal"):
+        config.add_section("animal")
+    config.set("animal","pig","lazy")
+    config.set("animal","dog","loyalty")
+    
+    if not config.has_option("user","kevin"):
+        print("None Section user, Option kevin")
+    else:
+        value = config.get('user', 'kevin')
+        print(f"value is {value}.")
+    # 转换成dict使用更方便
+    user_dict = dict(config.items("user"))
+    print(user_dict)
+    config["user_new"] = user_dict
+    with open(filepath, "w", encoding="utf8") as f:
+        config.write(f)
+--------------------------------------------
 config = configparser.ConfigParser()
-# filepath 路径禁止中文
 filepath = ""
 config.read(filepath)
 
