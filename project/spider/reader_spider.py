@@ -14,7 +14,7 @@ import requests
 
 is_delay = False
 base_dir = os.path.dirname(os.path.abspath(__file__))
-temp_dir = os.path.join(base_dir, "temp")
+json_dir = os.path.join(base_dir, "json")
 data_dir = os.path.join(base_dir, "data")
 
 
@@ -67,23 +67,23 @@ def pipe(html: str):
 def dump(filepath: str, pickle_path: pickle, is_clean=False):
     with open(pickle_path, 'rb') as f:
         index_data = pickle.load(f)
-    if not os.path.exists(temp_dir):
-        print(f"create temp dir:{temp_dir}")
-        os.mkdir(temp_dir)
+    if not os.path.exists(json_dir):
+        print(f"create json dir:{json_dir}")
+        os.mkdir(json_dir)
     pickle_jsonpath = []
     for info in index_data:
         json_url = info.href
         _, name = os.path.split(json_url)
-        json_save_path = os.path.join(temp_dir, name)
+        json_save_path = os.path.join(json_dir, name)
         pickle_jsonpath.append(json_save_path)
         if os.path.exists(json_save_path):
             # 尽可能不要给服务器压力，已经保存过的数据不再重复请求
             # print(f"file has exist {json_save_path}, pass.")
             continue
         html = download(json_url, is_json=True)
-        with open(os.path.join(temp_dir, name), 'w', encoding='utf-8') as f:
+        with open(os.path.join(json_dir, name), 'w', encoding='utf-8') as f:
             json.dump(html, f, ensure_ascii=False, indent=4)
-    # files = [os.path.join(temp_dir, file) for file in os.listdir(temp_dir) if file.endswith(".json")]
+    # files = [os.path.join(json_dir, file) for file in os.listdir(json_dir) if file.endswith(".json")]
     # 考虑到 pickle 可能过滤的情况，根据 pickle 数据的 json 来取比较好
     files = pickle_jsonpath
     all_data = []
@@ -94,8 +94,8 @@ def dump(filepath: str, pickle_path: pickle, is_clean=False):
         json.dump(all_data, f, ensure_ascii=False, indent=4)
     if is_clean:
         # 源数据还是保留比较好，不建议清理
-        shutil.rmtree(temp_dir)
-        print(f"remove temp dir:{temp_dir}")
+        shutil.rmtree(json_dir)
+        print(f"remove temp dir:{json_dir}")
 
 
 def save_index(index_pickle: pickle, new_data: list):
@@ -133,11 +133,35 @@ def filter_data(origin: pickle, download_low=10 ** 4, download_high=10 ** 6) -> 
     return new_pickle
 
 
+def source_merge():
+    website = "https://www.yckceo.com/yuedu/shuyuans/index.html"
+    webroot = "https://www.yckceo.com"
+    if not os.path.exists(json_dir):
+        os.mkdir(json_dir)
+    index_pickle = os.path.join(data_dir, "index_merge.pickle")
+    for i in range(1, 4):
+        url = f"{website}?page={i}"
+        page = download(url)
+        new_data = pipe(page)
+        for one_data in new_data:
+            # 构造json的url请求地址
+            temp = one_data.href
+            temp = str(temp).replace("content", "json")
+            one_data.href = f"{webroot}{temp}"
+        is_true = save_index(index_pickle, new_data)
+        if is_true:
+            print("存在重复数据，停止抓取")
+            break
+    dump(filepath=os.path.join(data_dir, "all_merge.json"), pickle_path=index_pickle)
+
+
 def schedule(has_data=False):
     website = "https://www.yckceo.com/yuedu/shuyuan/index.html"
     webroot = "https://www.yckceo.com"
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
     index_pickle = os.path.join(data_dir, "index.pickle")
-    json_filepath = "test.json"
+    json_filepath = os.path.join(data_dir, "all.json")
     if not has_data:
         for i in range(1, 40):
             url = f"{website}?page={i}"
@@ -155,7 +179,6 @@ def schedule(has_data=False):
     # 过滤生成新的pickle，只取精华书源。
     new_pickle = filter_data(origin=index_pickle, download_low=10 ** 4, download_high=10 ** 6)
     _ = new_pickle
-    # 如果需要过滤，请改成 pickle_path=new_pickle，如果不需要请改成 pickle_path=index_pickl
     dump(filepath=json_filepath, pickle_path=index_pickle)
 
 
