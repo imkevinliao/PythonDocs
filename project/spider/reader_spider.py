@@ -18,7 +18,7 @@ temp_dir = os.path.join(base_dir, "temp")
 data_dir = os.path.join(base_dir, "data")
 
 
-def download(url: str, is_json=False) -> str | list:
+def download(url: str, is_json=False):
     if is_delay:
         time.sleep(random.randint(1, 3))
     headers = {
