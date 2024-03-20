@@ -1,3 +1,4 @@
+import glob
 import json
 import os
 import pickle
@@ -16,6 +17,7 @@ is_delay = False
 base_dir = os.path.dirname(os.path.abspath(__file__))
 json_dir = os.path.join(base_dir, "json")
 data_dir = os.path.join(base_dir, "data")
+jsons_dir = os.path.join(base_dir, "jsons")
 
 
 def download(url: str, is_json=False):
@@ -144,7 +146,6 @@ def source_merge():
         page = download(url)
         new_data = pipe(page)
         for one_data in new_data:
-            # 构造json的url请求地址
             temp = one_data.href
             temp = str(temp).replace("content", "json")
             one_data.href = f"{webroot}{temp}"
@@ -152,7 +153,41 @@ def source_merge():
         if is_true:
             print("存在重复数据，停止抓取")
             break
-    dump(filepath=os.path.join(data_dir, "all_merge.json"), pickle_path=index_pickle)
+    with open(index_pickle, 'rb') as f:
+        index_data = pickle.load(f)
+    if not os.path.exists(jsons_dir):
+        os.mkdir(jsons_dir)
+    pickle_jsonpath = []
+    for index, info in enumerate(index_data):
+        json_url = info.href
+        _, name = os.path.split(json_url)
+        json_save_path = os.path.join(jsons_dir, name)
+        pickle_jsonpath.append(json_save_path)
+        if os.path.exists(json_save_path):
+            continue
+        html = download(json_url, is_json=True)
+        with open(os.path.join(jsons_dir, name), 'w', encoding='utf-8') as f:
+            json.dump(html, f, ensure_ascii=False, indent=4)
+    
+    # 合成的json太大了
+    def merge_json_files(filenames, output_filename):
+        with open(output_filename, 'w') as output_file:
+            output_file.write('[')  # 开始写入 JSON 数组
+            for j, filename in enumerate(filenames):
+                with open(filename, 'r') as input_file:
+                    # 除了第一个文件，其他文件之前都需要添加一个逗号，
+                    # 这是因为我们正在创建一个 JSON 数组。
+                    if j != 0:
+                        output_file.write(',')
+                    output_file.write(input_file.read().strip())  # 写入文件的 JSON 内容
+            output_file.write(']')  # 结束 JSON 数组
+    
+    # 使用 glob 模块找到所有的 JSON 文件
+    files = os.listdir(jsons_dir)
+    filepaths = [os.path.join(jsons_dir, filepath) for filepath in files if filepath.endswith(".json")]
+    jsonpath = os.path.join(data_dir, 'merged.json')
+    merge_json_files(filepaths, jsonpath)
+    json_format(src=jsonpath, dst=jsonpath)
 
 
 def schedule(has_data=False):
@@ -180,6 +215,48 @@ def schedule(has_data=False):
     new_pickle = filter_data(origin=index_pickle, download_low=10 ** 4, download_high=10 ** 6)
     _ = new_pickle
     dump(filepath=json_filepath, pickle_path=index_pickle)
+
+
+def generate_18(datas, dst_path=""):
+    def check(check_str, check_list, ignore_list):
+        has_include = False
+        for keyword in check_list:
+            if str(keyword) in str(check_str):
+                has_include = True
+                break
+        for keyword in ignore_list:
+            if str(keyword) in str(check_str):
+                has_include = False
+                break
+        return has_include
+    
+    keywords = ["🔞", "18", "R18", "r18", "辣", "涩", "肉"]
+    ignore_keywords = ["修复", "自写"]
+    new_data = []
+    for data in datas:
+        data = EasyDict(data)
+        book_comment = data.get("bookSourceComment")
+        book_kind = data.get("bookSourceGroup")
+        book_name = data.get("bookSourceName")
+        status_comment = False
+        status_kind = False
+        status_name = False
+        if book_comment:
+            status_comment = check(book_comment, keywords, ignore_keywords)
+        if book_comment:
+            status_kind = check(book_kind, keywords, ignore_keywords)
+        if book_comment:
+            status_name = check(book_name, keywords, ignore_keywords)
+        if status_comment or status_kind or status_name:
+            data.bookSourceGroup = "18"
+            new_data.append(data)
+    print(f"18:{len(new_data)}")
+    if dst_path:
+        output = dst_path
+    else:
+        output = '18.json'
+    with open(output, 'w', encoding='utf8') as f:
+        json.dump(new_data, f, ensure_ascii=False, indent=4)
 
 
 def generate_json():
@@ -214,30 +291,7 @@ def generate_json():
     dump(filepath=name, pickle_path=temp)
     with open(name, 'r', encoding='utf8') as f:
         datas = json.load(f)
-    book_sort = ["🔞", "18", "R18", "r18", "辣"]
-    comment = ["🔞", "涩", "肉"]
-    generate_data = []
-    for data in datas:
-        data = EasyDict(data)
-        group = data.get("bookSourceGroup")
-        book_name = data.get("bookSourceName")
-        is_18 = False
-        for temp in book_sort:
-            if str(group).find(str(temp)) != -1:
-                if "修复" in str(group):
-                    continue
-                if "自写" in str(group):
-                    continue
-                is_18 = True
-        for temp in comment:
-            if str(book_name).find(str(temp)) != -1:
-                is_18 = True
-        if is_18:
-            data.bookSourceGroup = "18"
-            generate_data.append(data)
-    print(f"18:{len(generate_data)}")
-    with open('18.json', 'w', encoding='utf8') as f:
-        json.dump(generate_data, f, ensure_ascii=False, indent=4)
+    generate_18(datas)
 
 
 def json_format(src, dst):
@@ -265,4 +319,4 @@ def clear_text(src, dst):
 
 
 if __name__ == '__main__':
-    generate_json()
+    schedule()
