@@ -2,7 +2,9 @@ import json
 import os
 import pickle
 import random
+import re
 import shutil
+import string
 import time
 
 from lxml import etree
@@ -11,6 +13,9 @@ from easydict import EasyDict
 import requests
 
 is_delay = False
+base_dir = os.path.dirname(os.path.abspath(__file__))
+temp_dir = os.path.join(base_dir, "temp")
+data_dir = os.path.join(base_dir, "data")
 
 
 def download(url: str, is_json=False) -> str | list:
@@ -62,7 +67,6 @@ def pipe(html: str):
 def dump(filepath: str, pickle_path: pickle, is_clean=False):
     with open(pickle_path, 'rb') as f:
         index_data = pickle.load(f)
-    temp_dir = "temp"
     if not os.path.exists(temp_dir):
         print(f"create temp dir:{temp_dir}")
         os.mkdir(temp_dir)
@@ -116,7 +120,7 @@ def filter_data(origin: pickle, download_low=10 ** 4, download_high=10 ** 6) -> 
     # 按照下载次数过滤，返回过滤后的pickle相对路径
     with open(origin, 'rb') as f:
         data = pickle.load(f)
-    new_pickle = "filter.pickle"
+    new_pickle = os.path.join(data_dir, "filter.pickle")
     new_data = []
     for i in data:
         info = i.downloads
@@ -132,7 +136,7 @@ def filter_data(origin: pickle, download_low=10 ** 4, download_high=10 ** 6) -> 
 def schedule(has_data=False):
     website = "https://www.yckceo.com/yuedu/shuyuan/index.html"
     webroot = "https://www.yckceo.com"
-    index_pickle = "index.pickle"
+    index_pickle = os.path.join(data_dir, "index.pickle")
     json_filepath = "test.json"
     if not has_data:
         for i in range(1, 40):
@@ -156,9 +160,8 @@ def schedule(has_data=False):
 
 
 def generate_json():
-    # result_dir = "./result"
-    # os.mkdir(result_dir)
-    # os.chdir(result_dir)
+    index_pickle = os.path.join(data_dir, "index.pickle")
+    os.chdir(data_dir)
     d_range = [(0, 10 ** 4),
                (10 ** 4, 10 ** 4 * 2),
                (10 ** 4 * 2, 10 ** 4 * 3),
@@ -166,7 +169,7 @@ def generate_json():
                (10 ** 4 * 4, 10 ** 4 * 5),
                (10 ** 4 * 5, 10 ** 6)]
     for i in d_range:
-        temp = filter_data(origin="index.pickle", download_low=i[0], download_high=i[1])
+        temp = filter_data(origin=index_pickle, download_low=i[0], download_high=i[1])
         name = f"{i[0]}_{i[1]}.json"
         dump(filepath=name, pickle_path=temp)
         with open(name, 'r', encoding='utf8') as f:
@@ -183,7 +186,7 @@ def generate_json():
         with open(name, 'w', encoding='utf8') as f:
             json.dump(new_datas, f, ensure_ascii=False, indent=4)
     # 18特别设置
-    temp = filter_data(origin="index.pickle", download_low=0, download_high=10 ** 6)
+    temp = filter_data(origin=index_pickle, download_low=0, download_high=10 ** 6)
     name = "all.json"
     dump(filepath=name, pickle_path=temp)
     with open(name, 'r', encoding='utf8') as f:
@@ -212,6 +215,30 @@ def generate_json():
     print(f"18:{len(generate_data)}")
     with open('18.json', 'w', encoding='utf8') as f:
         json.dump(generate_data, f, ensure_ascii=False, indent=4)
+
+
+def json_format(src, dst):
+    with open(src, 'r', encoding='utf8') as f:
+        datas = json.load(f)
+    with open(dst, 'w', encoding='utf8') as f:
+        json.dump(datas, f, ensure_ascii=False, indent=4)
+
+
+def clear_text(src, dst):
+    with open(src, 'r', encoding='utf8') as f:
+        lines = f.readlines()
+    #  常见中文字符 '，。“”‘’！？【】《》；：·'
+    reg = rf'[\w\s\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF{re.escape(string.punctuation)}，。“”‘’！？【】《》；：·]+'
+    new_lines = []
+    for line in lines:
+        result = re.findall(reg, line, re.UNICODE)
+        if result:
+            new_lines.append("".join(result))
+        else:
+            new_lines.append(line)
+    with open(dst, 'w', encoding='utf8') as f:
+        for line in new_lines:
+            f.write(line)
 
 
 if __name__ == '__main__':
