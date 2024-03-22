@@ -32,7 +32,7 @@ def merge():
 
 
 def pick():
-    huge_json = os.path.join(base_dir, "ignore", "merged.json")
+    huge_json = os.path.join(base_dir, "data", "merged.json")
     merged_filter = os.path.join(base_dir, "data", "merged_filter.json")
     with open(huge_json, 'r', encoding='utf8') as f:
         datas = json.load(f)
@@ -114,6 +114,6 @@ def pick_again():
 
 
 if __name__ == '__main__':
-    # pick()
-    # pick_again()
-    merge()
+    # merge()
+    pick()
+    pick_again()
