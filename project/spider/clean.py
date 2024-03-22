@@ -115,5 +115,6 @@ def pick_again():
 
 if __name__ == '__main__':
     # merge()
-    pick()
-    pick_again()
+    # pick()
+    # pick_again()
+    ...
