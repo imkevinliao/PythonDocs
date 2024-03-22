@@ -17,7 +17,7 @@ is_delay = False
 base_dir = os.path.dirname(os.path.abspath(__file__))
 json_dir = os.path.join(base_dir, "json")
 data_dir = os.path.join(base_dir, "data")
-jsons_dir = os.path.join(base_dir, "jsons")
+ignore_dir = os.path.join(base_dir, "ignore")
 
 
 def download(url: str, is_json=False):
@@ -155,39 +155,25 @@ def source_merge():
             break
     with open(index_pickle, 'rb') as f:
         index_data = pickle.load(f)
-    if not os.path.exists(jsons_dir):
-        os.mkdir(jsons_dir)
+    if not os.path.exists(ignore_dir):
+        os.mkdir(ignore_dir)
     pickle_jsonpath = []
     for index, info in enumerate(index_data):
         json_url = info.href
         _, name = os.path.split(json_url)
-        json_save_path = os.path.join(jsons_dir, name)
+        json_save_path = os.path.join(ignore_dir, name)
         pickle_jsonpath.append(json_save_path)
         if os.path.exists(json_save_path):
             continue
-        html = download(json_url, is_json=True)
-        with open(os.path.join(jsons_dir, name), 'w', encoding='utf-8') as f:
+        html = None
+        try:
+            html = download(json_url, is_json=True)
+        except Exception as e:
+            pass
+        if html is None:
+            continue
+        with open(os.path.join(ignore_dir, name), 'w', encoding='utf-8') as f:
             json.dump(html, f, ensure_ascii=False, indent=4)
-    
-    # 合成的json太大了
-    def merge_json_files(filenames, output_filename):
-        with open(output_filename, 'w') as output_file:
-            output_file.write('[')  # 开始写入 JSON 数组
-            for j, filename in enumerate(filenames):
-                with open(filename, 'r') as input_file:
-                    # 除了第一个文件，其他文件之前都需要添加一个逗号，
-                    # 这是因为我们正在创建一个 JSON 数组。
-                    if j != 0:
-                        output_file.write(',')
-                    output_file.write(input_file.read().strip())  # 写入文件的 JSON 内容
-            output_file.write(']')  # 结束 JSON 数组
-    
-    # 使用 glob 模块找到所有的 JSON 文件
-    files = os.listdir(jsons_dir)
-    filepaths = [os.path.join(jsons_dir, filepath) for filepath in files if filepath.endswith(".json")]
-    jsonpath = os.path.join(data_dir, 'merged.json')
-    merge_json_files(filepaths, jsonpath)
-    json_format(src=jsonpath, dst=jsonpath)
 
 
 def schedule(has_data=False):
@@ -229,7 +215,7 @@ def generate_18(datas, dst_path=""):
                 has_include = False
                 break
         return has_include
-    
+
     keywords = ["🔞", "18", "R18", "r18", "辣", "涩", "肉"]
     ignore_keywords = ["修复", "自写"]
     new_data = []
@@ -319,4 +305,4 @@ def clear_text(src, dst):
 
 
 if __name__ == '__main__':
-    schedule()
+    source_merge()

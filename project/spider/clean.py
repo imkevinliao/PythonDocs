@@ -23,8 +23,8 @@ def merge_json_files(filenames, output_filename):
 
 
 def merge():
-    json_path = os.path.join(base_dir, "ignore_in", "jsons")
-    output = os.path.join(base_dir, "ignore_out")
+    json_path = os.path.join(base_dir, "ignore")
+    output = os.path.join(base_dir, "data")
     files = os.listdir(json_path)
     filepaths = [os.path.join(json_path, filepath) for filepath in files if filepath.endswith(".json")]
     out = os.path.join(output, 'merged.json')
@@ -32,7 +32,7 @@ def merge():
 
 
 def pick():
-    huge_json = os.path.join(base_dir, "ignore_out", "merged.json")
+    huge_json = os.path.join(base_dir, "ignore", "merged.json")
     merged_filter = os.path.join(base_dir, "data", "merged_filter.json")
     with open(huge_json, 'r', encoding='utf8') as f:
         datas = json.load(f)
@@ -114,5 +114,6 @@ def pick_again():
 
 
 if __name__ == '__main__':
-    pick()
-    pick_again()
+    # pick()
+    # pick_again()
+    merge()
