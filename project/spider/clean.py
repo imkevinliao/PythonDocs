@@ -1,10 +1,13 @@
 import os
+import threading
+from concurrent.futures import ThreadPoolExecutor
 
+import requests
 from easydict import EasyDict
 
 import json
 
-from reader_spider import generate_18
+from reader_spider import generate_18, clear_text
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -113,8 +116,81 @@ def pick_again():
         json.dump(third_filter, f, ensure_ascii=False, indent=4)
 
 
+def check(data, valid_data, lock, timeout=5):
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+                      "Chrome/58.0.3029.110 Safari/537.3"
+    }
+    my_dict = EasyDict(data)
+    url = my_dict.bookSourceUrl
+    group = my_dict.bookSourceGroup
+    status = "request error"
+    try:
+        response = requests.get(url, headers=headers, timeout=timeout)
+        status = response.status_code
+    except Exception as e:
+        print(f"error url:{url}\nerror info:{e}")
+    if status == 200:
+        with lock:
+            valid_data.append(data)
+        print(f"okay url:{url}  status:{status}  group:{group}")
+
+
+def multi_threading(tasks, count=10):
+    lock = threading.Lock()
+    valid_data = []
+    pool = ThreadPoolExecutor(max_workers=count)
+    timeout = 5
+    for task in tasks:
+        sub_thread = pool.submit(check, task, valid_data, lock, timeout)
+        sub_thread.exception(timeout=None)
+    pool.shutdown()
+    return valid_data
+
+
+def valid_url():
+    path_all = os.path.join(base_dir, "data", "filter.json")
+    path_18 = os.path.join(base_dir, "data", "filter_18.json")
+    output = os.path.join(base_dir, "data", "clean.json")
+    with open(path_all, 'r', encoding='utf8') as f:
+        data_all = json.load(f)
+    with open(path_18, 'r', encoding='utf8') as f:
+        data_18 = json.load(f)
+    data_all.extend(data_18)
+    valid_data = multi_threading(data_all, count=20)
+    print(f"datas:{len(valid_data)}")
+    with open(output, 'w', encoding='utf8') as f:
+        json.dump(valid_data, f, ensure_ascii=False, indent=4)
+    clear_text(src=output, dst=output)
+
+
+def valid_url_again():
+    clean_json = os.path.join(base_dir, "data", "clean.json")
+    with open(clean_json, 'r', encoding='utf8') as f:
+        datas = json.load(f)
+    new_data = []
+    for data in datas:
+        my_dict = EasyDict(data)
+        url = my_dict.bookSourceUrl
+        group = my_dict.bookSourceGroup
+        if group == "18":
+            pass
+        if ".com" in url:
+            if "m." in url:
+                my_dict.bookSourceGroup = "m.com"
+            else:
+                my_dict.bookSourceGroup = "www.com"
+        else:
+            my_dict.bookSourceGroup = "other"
+        new_data.append(my_dict)
+    with open(clean_json, 'w', encoding='utf8') as f:
+        json.dump(new_data, f, ensure_ascii=False, indent=4)
+
+
 if __name__ == '__main__':
     # merge()
     # pick()
     # pick_again()
+    # valid_url()
+    # valid_url_again()
     ...
