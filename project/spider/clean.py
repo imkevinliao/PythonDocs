@@ -188,6 +188,7 @@ def valid_url_again():
 
 
 if __name__ == '__main__':
+    "https://api5-normal-lf.fqnovel.com   番茄小说"
     # merge()
     # pick()
     # pick_again()
