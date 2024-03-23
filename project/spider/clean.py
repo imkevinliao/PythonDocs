@@ -174,7 +174,7 @@ def valid_url_again():
         url = my_dict.bookSourceUrl
         group = my_dict.bookSourceGroup
         if group == "18":
-            pass
+            continue
         if ".com" in url:
             if "m." in url:
                 my_dict.bookSourceGroup = "m.com"
