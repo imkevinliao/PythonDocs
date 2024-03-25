@@ -93,7 +93,7 @@ class Source(object):
             json.dump(data, f, ensure_ascii=False, indent=4)
         return None
     
-    def calculate_frequently(self):
+    def calculate_frequently(self,frequent=None):
         datas = self.get()
         book_comment = []
         book_name = []
@@ -114,12 +114,12 @@ class Source(object):
         name = calculate(" ".join(book_name))
         group = calculate(" ".join(book_group))
         
-        print("comment:", comment.most_common(50))
-        print("name:", name.most_common(50))
-        print("group", group.most_common(50))
+        print("comment:", comment.most_common(frequent))
+        print("name:", name.most_common(frequent))
+        print("group", group.most_common(frequent))
     
     def clear_invalid_book_sources(self, is_save=False):
-        keywords = ['失效', '规则为空', '失-效', "搜索内容为空并且没有发现", "超时", "登录"]
+        keywords = ['失效', '规则为空', '失-效', "搜索内容为空并且没有发现", "超时", "登录", "验证码", "搜索有盾"]
         clean_data = []
         datas = self.get()
         for data in datas:
@@ -166,14 +166,28 @@ class Source(object):
     def re_group_help(data: dict):
         categories = {
             '漫画': ["🎨", "漫画"],
-            '有声': ["有声"],
+            '有声': ["有声", "FM", "听书"],
             '图片': ["图片"],
-            '仅发现': ["仅发现"],
+            '仅发现': ["仅发现", "发现"],
+            '耽美': ["耽美"],
             'api': ["api"],
-            '18': ["🔞", "绅士"],
+            '18': ["🔞", "绅士", "色情"],
+            '女频': ["女频"],
             '笔趣阁': ["笔趣"],
-            '乐文': ["乐文"],
+            '番茄': ["番茄"],
+            '小说网站1': ["乐文", "顶点", "书包", "顶点", "御书", "笔下文学", "69书吧", "第一版主", "疯情", "燃文", "海棠", "晋江"],
+            '小说网站2': ["八一", "奇书", "追书", "红袖", "九桃", "52书库", "掌阅", "香书", "第二书包", "海岸线", "烈火"],
+            '言情': ["言情"],
+            '正版': ["正版"],
+            '优质': ["优质"],
+            '精品': ["精品"],
+            '自制': ["自制", "自写"],
+            '破冰': ["破冰"],
+            '一程': ["一程"],
+            '天域战歌': ["天域战歌"],
             '网页源': ["网页源"],
+            '源仓库': ["源仓库"],
+            '其他': ["其他"],
         }
         comment = data.get("bookSourceComment")
         group = data.get("bookSourceGroup")
@@ -187,7 +201,7 @@ class Source(object):
                     any(word in name for word in keywords) or (category == 'api' and 'api.' in url):
                 data["bookSourceGroup"] = category
                 return data
-        data["bookSourceGroup"] = "未分类"
+        data["bookSourceGroup"] = "其他"
         return data
     
     def re_group(self, is_pick=False):
@@ -196,7 +210,8 @@ class Source(object):
         for data in datas:
             after_group = self.re_group_help(data)
             if is_pick:
-                pick = ['api', '18', '笔趣阁', '乐文', '网页源', '未分类']
+                pick = ['漫画', '有声', '图片', '仅发现', '耽美', 'api', '18', '女频', '笔趣阁', '番茄', '小说网站1', '小说网站2', '言情', '正版', '优质', '精品', '自制', '破冰', '一程', '天域战歌', '网页源', '源仓库', '其他']
+
                 if any(word in after_group.get("bookSourceGroup") for word in pick):
                     new_data.append(after_group)
             else:
@@ -207,16 +222,26 @@ class Source(object):
     def filter_by_exist(datas: list):
         new_data = []
         for data in datas:
+            ruleBookInfo = data.get("ruleBookInfo")
+            ruleContent = data.get("ruleContent")
             ruleExplore = data.get("ruleExplore")
             ruleSearch = data.get("ruleSearch")
+            ruleToc = data.get("ruleToc")
             explore = data.get("exploreUrl")
             search = data.get("searchUrl")
-            if all([ruleExplore, ruleExplore, explore, search]):
+            if all([ruleBookInfo, ruleContent, ruleExplore, ruleSearch, ruleToc, explore, search]):
                 new_data.append(data)
             else:
                 pass
         print(f"input:{len(datas)},output:{len(new_data)}")
         return new_data
+    
+    @staticmethod
+    def count(datas, key="bookSourceGroup"):
+        count = Counter()
+        for data in datas:
+            count[data[key]] += 1
+        print(count.most_common())
     
     def run(self):
         ...
@@ -229,4 +254,9 @@ if __name__ == "__main__":
     path3 = os.path.join(datadir, "source_merge.json")
     path4 = os.path.join(datadir, "source_result.json")
     demo = Source(src=path3, dst=path4)
-    demo.save(demo.filter_by_exist(demo.get()))
+    # demo.calculate_frequently(20)
+    filter_data = demo.filter_by_exist(demo.get())
+    demo.save(filter_data)
+    # new_data = demo.re_group(is_pick=True)
+    # demo.count(new_data)
+    # print("haha")
