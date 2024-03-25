@@ -71,7 +71,8 @@ class Source(object):
         name = data.get("bookSourceName")
         group = data.get("bookSourceGroup")
         url = data.get("bookSourceUrl")
-        print(f"{data}\nindex:{index}\nnumbers:{len(datas)}\ncomment:{comment}\nname:{name}\ngroup:{group}\nurl:{url}")
+        print(
+            f"{json.dumps(data, indent=4)}\nindex:{index}\nnumbers:{len(datas)}\ncomment:{comment}\nname:{name}\ngroup:{group}\nurl:{url}")
         if sp:
             key_map = {
                 'name': 'bookSourceName',
@@ -156,7 +157,7 @@ class Source(object):
         print(f"api data:{len(api_data)}, api url can't be checked, so pass check.")
         if is_catch:
             temp = self.dst_path
-            self.dst_path = "temp" + os.path.basename(src_path)
+            self.dst_path = "temp" + os.path.basename(self.src_path)
             self.save(new_data)
             self.dst_path = temp
         return new_data
@@ -202,6 +203,21 @@ class Source(object):
                 new_data.append(after_group)
         return new_data
     
+    @staticmethod
+    def filter_by_exist(datas: list):
+        new_data = []
+        for data in datas:
+            ruleExplore = data.get("ruleExplore")
+            ruleSearch = data.get("ruleSearch")
+            explore = data.get("exploreUrl")
+            search = data.get("searchUrl")
+            if all([ruleExplore, ruleExplore, explore, search]):
+                new_data.append(data)
+            else:
+                pass
+        print(f"input:{len(datas)},output:{len(new_data)}")
+        return new_data
+    
     def run(self):
         ...
 
@@ -212,9 +228,5 @@ if __name__ == "__main__":
     path2 = os.path.join(datadir, "source_multi.json")
     path3 = os.path.join(datadir, "source_merge.json")
     path4 = os.path.join(datadir, "source_result.json")
-    merge_json_simple([path1, path2], path3)
-    source = Source(src=path1, dst=path4)
-    results = source.re_group(is_pick=True)
-    source.save(results)
-    demo = Source(src=path4, dst=path4)
-    demo.info()
+    demo = Source(src=path3, dst=path4)
+    demo.save(demo.filter_by_exist(demo.get()))
