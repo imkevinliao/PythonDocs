@@ -230,7 +230,7 @@ class Source(object):
             after_group = self.re_group_help(data)
             if is_pick:
                 pick = ['耽美', 'api', '18', '女频', '笔趣阁', '番茄', '小说网站1', '小说网站2',
-                        '言情', '正版', '优质', '精品', '自制', '破冰', '一程', '网页源', '源仓库', '其他']
+                        '言情', '正版', '优质', '精品', '自制', '破冰', '一程', '网页源', '源仓库','其他']
                 
                 if any(word in after_group.get("bookSourceGroup") for word in pick):
                     new_data.append(after_group)
@@ -273,7 +273,7 @@ if __name__ == "__main__":
     path2 = os.path.join(datadir, "source_multi.json")
     path3 = os.path.join(datadir, "source_merge.json")
     path4 = os.path.join(datadir, "source_result.json")
-    demo = Source(src=path1, dst=path4)
+    demo = Source(src=path3, dst=path4)
     clear_data = demo.clear_invalid_book_sources()
     filter_data = demo.filter_by_exist(clear_data)
     new_data = demo.re_group(datas=filter_data, is_pick=True)
