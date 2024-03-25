@@ -211,7 +211,7 @@ class Source(object):
             after_group = self.re_group_help(data)
             if is_pick:
                 pick = ['耽美', 'api', '18', '女频', '笔趣阁', '番茄', '小说网站1', '小说网站2',
-                        '言情', '正版', '优质', '精品', '自制', '破冰', '一程', '网页源', '源仓库', '其他']
+                        '言情', '正版', '优质', '精品', '自制', '破冰', '一程', '网页源', '源仓库']
                 
                 if any(word in after_group.get("bookSourceGroup") for word in pick):
                     new_data.append(after_group)
