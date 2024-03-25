@@ -1,5 +1,7 @@
 import json
 import os.path
+import re
+import string
 import threading
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
@@ -17,6 +19,23 @@ def merge_json_simple(src_paths, output):
             datas.extend(data)
     with open(output, 'w', encoding='utf8') as f:
         json.dump(datas, f, ensure_ascii=False, indent=4)
+
+
+def clear_text(src, dst):
+    with open(src, 'r', encoding='utf8') as f:
+        lines = f.readlines()
+    #  常见中文字符 '，。“”‘’！？【】《》；：·'
+    reg = rf'[\w\s\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF{re.escape(string.punctuation)}，。“”‘’！？【】《》；：·]+'
+    new_lines = []
+    for line in lines:
+        result = re.findall(reg, line, re.UNICODE)
+        if result:
+            new_lines.append("".join(result))
+        else:
+            new_lines.append(line)
+    with open(dst, 'w', encoding='utf8') as f:
+        for line in new_lines:
+            f.write(line)
 
 
 def check(data, valid_data, lock, timeout=4):
@@ -259,5 +278,6 @@ if __name__ == "__main__":
     filter_data = demo.filter_by_exist(clear_data)
     new_data = demo.re_group(datas=filter_data, is_pick=True)
     demo.save(new_data)
+    clear_text(src=path4, dst=path4)
     show = Source(src=path4, dst=path4)
     show.info()
