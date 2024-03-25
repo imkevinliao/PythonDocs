@@ -132,7 +132,7 @@ class Source(object):
             if any(word in group for word in keywords):
                 continue
             clean_data.append(data)
-        print(f"clear invalid source:\ninput:{len(datas)}  output:{len(clean_data)}")
+        print(f"clear invalid source:input:{len(datas)},output:{len(clean_data)}")
         if is_save:
             """清理无效书源，并保存回源路径"""
             temp = self.dst_path
@@ -234,7 +234,7 @@ class Source(object):
                 new_data.append(data)
             else:
                 pass
-        print(f"input:{len(datas)},output:{len(new_data)}")
+        print(f"filter source:input:{len(datas)},output:{len(new_data)}")
         return new_data
     
     @staticmethod
@@ -255,8 +255,9 @@ if __name__ == "__main__":
     path3 = os.path.join(datadir, "source_merge.json")
     path4 = os.path.join(datadir, "source_result.json")
     demo = Source(src=path3, dst=path4)
-    filter_data = demo.filter_by_exist(demo.get())
+    clear_data = demo.clear_invalid_book_sources()
+    filter_data = demo.filter_by_exist(clear_data)
     new_data = demo.re_group(datas=filter_data, is_pick=True)
     demo.save(new_data)
-    show = Source(src=path4,dst=path4)
+    show = Source(src=path4, dst=path4)
     show.info()
