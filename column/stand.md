@@ -60,7 +60,7 @@ filepath = ""
 with open(filepath, 'w', encoding='utf_8_sig', newline="") as f:
   writer = csv.writer(f)
   data = [1, 2, 3]
-  writer.writerrow(data)
+  writer.writerow(data)
 with open (filepath, 'r', newline="") as f:
   data = csv.reader(f)
   for row in data:
