@@ -61,10 +61,50 @@ with open(filepath, 'w', encoding='utf_8_sig', newline="") as f:
   writer = csv.writer(f)
   data = [1, 2, 3]
   writer.writerow(data)
-with open (filepath, 'r', newline="") as f:
+with open (filepath, 'r', encoding='utf_8_sig', newline="") as f:
   data = csv.reader(f)
   for row in data:
     print(row)
+
+
+def read_dict_from_csv(path):
+    with open(path, 'r', encoding='utf_8_sig') as f:
+        reader = csv.DictReader(f)
+        dicts = list(reader)
+    return dicts
+
+
+def write_dicts_to_csv(path: str, data: list, mode='a+'):
+    with open(path, mode, encoding='utf_8_sig', newline='') as f:
+        fields = list(data[0].keys())
+        writer = csv.DictWriter(f, fields)
+        file_size = f.tell()
+        if file_size == 0:
+            writer.writeheader()
+        writer.writerows(data)
+
+
+def write_dict_to_csv(path: str, data: dict, mode='a+'):
+    with open(path, mode, encoding='utf_8_sig', newline='') as f:
+        fields = list(data.keys())
+        writer = csv.DictWriter(f, fields)
+        file_size = f.tell()
+        if file_size == 0:
+            writer.writeheader()
+        writer.writerow(data)
+
+
+def demo():
+    test_dict = {'name': 'John Doe', 'age': '30', 'city': 'New York'}
+    test_dict2 = [{'name': 'John 1', 'age': '30', 'city': 'New York'},
+                  {'name': 'John 2', 'age': '30', 'city': 'New York'},
+                  {'name': 'John 3', 'age': '30', 'city': 'New York'}]
+    path = "data.csv"
+    write_dict_to_csv(path, test_dict, "a+")
+    write_dicts_to_csv(path, test_dict2)
+    data = read_dict_from_csv(path)
+    for i in data:
+        print(i)
 ```
 # decorator
 ```
