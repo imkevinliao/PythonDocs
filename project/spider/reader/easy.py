@@ -200,7 +200,9 @@ class Clean(object):
         for index, data in enumerate(datas):
             name = data.get("bookSourceName", "")
             group = data.get("bookSourceGroup", "")
-            new_str = f"{index}-name:{name}-group:{group}"
+            name = str(name).strip()
+            group = str(group).strip()
+            new_str = f"My{index}:{name}:{group}"
             new_name = clear_text(new_str)
             data["bookSourceGroup"] = f"MyGroup"
             data["bookSourceName"] = new_name
