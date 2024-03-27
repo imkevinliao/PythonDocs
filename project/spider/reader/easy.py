@@ -210,7 +210,7 @@ class Clean(object):
             group = data.get("bookSourceGroup", "")
             name = str(name).strip()
             group = str(group).strip()
-            new_str = f"My{index}:{name}:{group}"
+            new_str = f"my{index}:{name}:{group}"
             new_name = clear_text(new_str)
             data["bookSourceGroup"] = self._group
             data["bookSourceName"] = new_name
