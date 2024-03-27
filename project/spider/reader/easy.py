@@ -124,7 +124,6 @@ def update_csv():
             dict_data["json_dst"] = dst
         new_datas.append(dict_data)
     write_dicts_to_csv(i_csv, new_datas, mode="w")
-    print("update over")
 
 
 def merge_json(filenames, output_filename):
@@ -183,6 +182,15 @@ class Clean(object):
     def __init__(self, src, dst):
         self.src_path = src
         self.dst_path = dst
+        self._group = "myGroup"
+    
+    @property
+    def group(self):
+        return self._group
+    
+    @group.setter
+    def group(self, value):
+        self._group = value
     
     def get(self):
         with open(self.src_path, 'r', encoding='utf8') as f:
@@ -204,25 +212,29 @@ class Clean(object):
             group = str(group).strip()
             new_str = f"My{index}:{name}:{group}"
             new_name = clear_text(new_str)
-            data["bookSourceGroup"] = f"MyGroup"
+            data["bookSourceGroup"] = self._group
             data["bookSourceName"] = new_name
             new_datas.append(data)
         self.save(new_datas)
 
 
-if __name__ == '__main__':
-    parse = argparse.ArgumentParser("Easy BookSource Build / 简单 书源构建")
+def core():
+    parse = argparse.ArgumentParser("Easy BookSource Build / 简单 书源构建\n")
     parse.add_argument('-a', '--add', type=str, default="", help="add a json_url path/ 添加一个json_url 地址")
     parse.add_argument('-g', '-m', '--merge', '--generate', type=bool, default=True,
                        help="merge json / 合成 json 文件")
     parse.add_argument('-u', '--update', type=bool, default=True, help="update json by csv file / 根据CSV文件更新json")
     parse.add_argument('-c', '--clean', '--clear', type=bool, default=False,
                        help="clear merge json file / 清理合成后的json文件")
+    parse.add_argument('--regroup', '--change_group', nargs=2, type=str,
+                       help="input two string use space to split: filepath group_name")
+    
     args = parse.parse_args()
     new_url = args.add
     is_merge = args.merge
     is_update = args.update
     is_clean = args.clean
+    regroup = args.regroup
     if new_url != "":
         run(new_url)
     if is_update:
@@ -230,5 +242,16 @@ if __name__ == '__main__':
     if is_merge:
         generate_json()
     if is_clean:
-        my_path = Path()
-        Clean(src=my_path.new_json, dst=my_path.new_json).run()
+        Clean(src=Path().new_json, dst=Path().new_json).run()
+    if regroup:
+        inst = Clean(src=regroup[0], dst=regroup[0])
+        inst.group = regroup[1]
+        inst.run()
+
+
+def debug():
+    print("debug test")
+
+
+if __name__ == '__main__':
+    core()
