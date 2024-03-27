@@ -270,7 +270,7 @@ def requests_verify(src, dst):
     datas = temp.get()
     start = datetime.now()
     print(start)
-    results = multi_process(datas)  # [tuple(index,url,status),...]
+    results = multi_process(datas)
     end = datetime.now()
     print(end)
     temp.save(results)

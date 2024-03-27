@@ -1,3 +1,4 @@
+import argparse
 import csv
 import json
 import os.path
@@ -31,6 +32,7 @@ def set_dict(src, dst):
 
 
 def download_json(url: str):
+    print(f"download {url}")
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                       "Chrome/58.0.3029.110 Safari/537.3"
@@ -105,22 +107,91 @@ def check_csv(path, url):
     return check_status
 
 
+def update_csv():
+    my_path = Path()
+    i_csv = my_path.index_csv
+    j_dir = my_path.json_dir
+    datas = read_dict_from_csv(i_csv)
+    new_datas = []
+    for data in datas:
+        dict_data = dict(data)
+        src = dict_data.get("json_src")
+        dst = dict_data.get("json_dst")
+        if dst == "" or dst is None:
+            html = download_json(src)
+            dst = os.path.join(j_dir, f"{random_string()}.json")
+            save_json(dst, html)
+            dict_data["json_dst"] = dst
+        new_datas.append(dict_data)
+    write_dicts_to_csv(i_csv, new_datas, mode="w")
+    print("update over")
+
+
+def merge_json(filenames, output_filename):
+    with open(output_filename, 'w', encoding='utf8') as output_file:
+        output_file.write('[')  # 开始写入JSON 数组
+        for j, filename in enumerate(filenames):
+            with open(filename, 'r', encoding='utf8') as input_file:
+                file_content = input_file.read().strip()
+                # 移除文件内容开头的'[' 和结尾的 ']'
+                if file_content.startswith('['):
+                    file_content = file_content[1:]
+                if file_content.endswith(']'):
+                    file_content = file_content[:-1]
+                # 如果不是第一个文件，在前面添加一个逗号
+                if j != 0:
+                    output_file.write(',')
+                output_file.write(file_content)  # 写入文件的 JSON 内容
+        output_file.write(']')  # 结束 JSON 数组
+
+
+def generate_json():
+    my_path = Path()
+    j_dir = my_path.json_dir
+    n_json = my_path.new_json
+    files = list(os.listdir(j_dir))
+    if files:
+        filepaths = [os.path.join(j_dir, file) for file in files if file.endswith(".json")]
+        merge_json(filepaths, n_json)
+
+
 def run(json_url):
-    json_dir = os.path.join("./", "json")
-    index_csv = "index.csv"
-    if not os.path.exists(json_dir):
-        os.mkdir(json_dir)
-    status = check_csv(index_csv, json_url)
+    my_path = Path()
+    j_dir = my_path.json_dir
+    i_csv = my_path.index_csv
+    if not os.path.exists(j_dir):
+        os.mkdir(j_dir)
+    status = check_csv(i_csv, json_url)
     if status is True:
         print(f"{json_url} has exist")
         return
     html = download_json(json_url)
-    dst = os.path.join(json_dir, f"{random_string()}.json")
+    dst = os.path.join(j_dir, f"{random_string()}.json")
     save_json(dst, html)
     user_dict = set_dict(src=json_url, dst=dst)
-    write_dict_to_csv(index_csv, user_dict)
+    write_dict_to_csv(i_csv, user_dict)
+    generate_json()
+
+
+class Path:
+    json_dir = os.path.join("./", "json")
+    index_csv = "index.csv"
+    new_json = "merge.json"
 
 
 if __name__ == '__main__':
-    json_src = r"https://jt12.de/SYV2_4/2024/03/20/12/34/49/171090928965fa6769796a5.json"
-    run(json_src)
+    parse = argparse.ArgumentParser("Easy BookSource Build / 简单 书源构建")
+    parse.add_argument('-a', '--add', type=str, default="", help="add a json_url path/ 添加一个json_url 地址")
+    parse.add_argument('-g', '-m', '--merge', '--generate', type=bool, default=False,
+                       help="merge json / 合成 json 文件")
+    parse.add_argument('-u', '--update', type=bool, default=False, help="update json by csv file / 根据CSV文件更新json")
+    args = parse.parse_args()
+    new_url = args.add
+    is_merge = args.merge
+    is_update = args.update
+    if new_url != "":
+        run(new_url)
+    if is_merge:
+        generate_json()
+    if is_update:
+        update_csv()
