@@ -198,11 +198,11 @@ class Clean(object):
         datas = self.get()
         new_datas = []
         for index, data in enumerate(datas):
-            name = data.get("bookSourceName", "name")
-            group = data.get("bookSourceGroup", "group")
-            new_str = f"{group}:{name}_{index}"
+            name = data.get("bookSourceName", "")
+            group = data.get("bookSourceGroup", "")
+            new_str = f"{index}-name:{name}-group:{group}"
             new_name = clear_text(new_str)
-            data["bookSourceGroup"] = f"_MyGroup"
+            data["bookSourceGroup"] = f"MyGroup"
             data["bookSourceName"] = new_name
             new_datas.append(data)
         self.save(new_datas)
