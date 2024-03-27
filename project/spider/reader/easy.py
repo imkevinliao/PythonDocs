@@ -179,19 +179,54 @@ class Path:
     new_json = "ignore_merge.json"
 
 
+class Clean(object):
+    def __init__(self, src, dst):
+        self.src_path = src
+        self.dst_path = dst
+    
+    def get(self):
+        with open(self.src_path, 'r', encoding='utf8') as f:
+            data = json.load(f)
+        return data
+    
+    def save(self, data):
+        with open(self.dst_path, 'w+', encoding='utf8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+        return None
+    
+    def run(self):
+        datas = self.get()
+        new_datas = []
+        for index, data in enumerate(datas):
+            name = data.get("bookSourceName", "name")
+            group = data.get("bookSourceGroup", "group")
+            new_str = f"{group}:{name}_{index}"
+            new_name = clear_text(new_str)
+            data["bookSourceGroup"] = f"_MyGroup"
+            data["bookSourceName"] = new_name
+            new_datas.append(data)
+        self.save(new_datas)
+
+
 if __name__ == '__main__':
     parse = argparse.ArgumentParser("Easy BookSource Build / 简单 书源构建")
     parse.add_argument('-a', '--add', type=str, default="", help="add a json_url path/ 添加一个json_url 地址")
-    parse.add_argument('-g', '-m', '--merge', '--generate', type=bool, default=False,
+    parse.add_argument('-g', '-m', '--merge', '--generate', type=bool, default=True,
                        help="merge json / 合成 json 文件")
-    parse.add_argument('-u', '--update', type=bool, default=False, help="update json by csv file / 根据CSV文件更新json")
+    parse.add_argument('-u', '--update', type=bool, default=True, help="update json by csv file / 根据CSV文件更新json")
+    parse.add_argument('-c', '--clear', 'clean', type=bool, default=False,
+                       help="clear merge json file / 整理合成后的json文件")
     args = parse.parse_args()
     new_url = args.add
     is_merge = args.merge
     is_update = args.update
+    is_clean = args.clean
     if new_url != "":
         run(new_url)
-    if is_merge:
-        generate_json()
     if is_update:
         update_csv()
+    if is_merge:
+        generate_json()
+    if is_clean:
+        my_path = Path()
+        Clean(src=my_path.new_json, dst=my_path.new_json).run()
