@@ -176,7 +176,7 @@ def run(json_url):
 class Path:
     json_dir = os.path.join("./", "ignore_json")
     index_csv = "ignore_index.csv"
-    new_json = "merge.json"
+    new_json = "ignore_merge.json"
 
 
 if __name__ == '__main__':
