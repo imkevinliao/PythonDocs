@@ -224,7 +224,7 @@ def core():
     parse.add_argument('-g', '-m', '--merge', '--generate', type=bool, default=True,
                        help="merge json / 合成 json 文件")
     parse.add_argument('-u', '--update', type=bool, default=True, help="update json by csv file / 根据CSV文件更新json")
-    parse.add_argument('-c', '--clean', '--clear', type=bool, default=False,
+    parse.add_argument('-c', '--clean', '--clear', type=bool, default=True,
                        help="clear merge json file / 清理合成后的json文件")
     parse.add_argument('--regroup', '--change_group', nargs=2, type=str,
                        help="input two string use space to split: filepath group_name")
