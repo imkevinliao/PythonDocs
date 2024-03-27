@@ -211,9 +211,9 @@ class Clean(object):
             name = str(name).strip()
             group = str(group).strip()
             new_str = f"my{index}:{name}:{group}"
-            new_name = clear_text(new_str)
+            # new_str = clear_text(new_str)
             data["bookSourceGroup"] = self._group
-            data["bookSourceName"] = new_name
+            data["bookSourceName"] = new_str
             new_datas.append(data)
         self.save(new_datas)
 
