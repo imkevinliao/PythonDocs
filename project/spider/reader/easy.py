@@ -227,7 +227,7 @@ def core():
     parse.add_argument('-c', '--clean', '--clear', type=bool, default=False, help="重新命名组名")
     parse.add_argument('-f', '--full', type=str, default=False, help="完整执行")
     
-    parse.add_argument('--regroup', '--change_group', nargs=2, type=str, help="文件路径 新的组名（空格分开两个参数）")
+    parse.add_argument('--group', '--regroup', nargs=2, type=str, help="文件路径 新的组名（空格分开两个参数）")
     parse.add_argument('-d', '--download', type=str, default="", help="下载文件")
     args = parse.parse_args()
     
@@ -237,7 +237,7 @@ def core():
     is_clean = args.clean
     is_full = args.full
     
-    regroup = args.regroup
+    group = args.group
     download = args.download
     if is_full:
         if new_url:
@@ -258,9 +258,9 @@ def core():
     if is_clean:
         Clean(src=Path().new_json, dst=Path().new_json).run()
         return None
-    if regroup:
-        inst = Clean(src=regroup[0], dst=regroup[0])
-        inst.group = regroup[1]
+    if group:
+        inst = Clean(src=group[0], dst=group[0])
+        inst.group = group[1]
         inst.run()
         return None
     if download:
