@@ -220,33 +220,53 @@ class Clean(object):
 
 def core():
     parse = argparse.ArgumentParser("Easy BookSource Build / 简单 书源构建\n")
-    parse.add_argument('-a', '--add', type=str, default="", help="add a json_url path/ 添加一个json_url 地址")
-    parse.add_argument('-g', '-m', '--merge', '--generate', type=bool, default=True,
-                       help="merge json / 合成 json 文件")
-    parse.add_argument('-u', '--update', type=bool, default=True, help="update json by csv file / 根据CSV文件更新json")
-    parse.add_argument('-c', '--clean', '--clear', type=bool, default=True,
-                       help="clear merge json file / 清理合成后的json文件")
-    parse.add_argument('--regroup', '--change_group', nargs=2, type=str,
-                       help="input two string use space to split: filepath group_name")
     
+    parse.add_argument('-a', '--add', type=str, default="", help="增加一个 json 书源")
+    parse.add_argument('-g', '-m', '--merge', '--generate', type=bool, default=False, help="合成 json 文件")
+    parse.add_argument('-u', '--update', type=bool, default=False, help="根据 csv 文件更新 json 数据")
+    parse.add_argument('-c', '--clean', '--clear', type=bool, default=False, help="重新命名组名")
+    parse.add_argument('-f', '--full', type=str, default=False, help="完整执行")
+    
+    parse.add_argument('--regroup', '--change_group', nargs=2, type=str, help="文件路径 新的组名（空格分开两个参数）")
+    parse.add_argument('-d', '--download', type=str, default="", help="下载文件")
     args = parse.parse_args()
+    
     new_url = args.add
     is_merge = args.merge
     is_update = args.update
     is_clean = args.clean
+    is_full = args.full
+    
     regroup = args.regroup
-    if new_url != "":
+    download = args.download
+    if is_full:
+        if new_url:
+            run(new_url)
+        update_csv()
+        generate_json()
+        Clean(src=Path().new_json, dst=Path().new_json).run()
+        return None
+    if new_url:
         run(new_url)
+        return None
     if is_update:
         update_csv()
+        return None
     if is_merge:
         generate_json()
+        return None
     if is_clean:
         Clean(src=Path().new_json, dst=Path().new_json).run()
+        return None
     if regroup:
         inst = Clean(src=regroup[0], dst=regroup[0])
         inst.group = regroup[1]
         inst.run()
+        return None
+    if download:
+        html = download_json(download)
+        save_json("temp.json", html)
+        return None
 
 
 def debug():
