@@ -214,8 +214,7 @@ if __name__ == '__main__':
     parse.add_argument('-g', '-m', '--merge', '--generate', type=bool, default=True,
                        help="merge json / 合成 json 文件")
     parse.add_argument('-u', '--update', type=bool, default=True, help="update json by csv file / 根据CSV文件更新json")
-    parse.add_argument('-c', '--clear', 'clean', type=bool, default=False,
-                       help="clear merge json file / 整理合成后的json文件")
+    parse.add_argument('-c', '--clear', '--clean', type=bool, default=False, help="clear merge json file / 清理合成后的json文件")
     args = parse.parse_args()
     new_url = args.add
     is_merge = args.merge
