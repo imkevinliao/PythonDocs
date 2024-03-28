@@ -119,7 +119,7 @@ def update_csv():
         dict_data = dict(data)
         src = dict_data.get("json_src")
         dst = dict_data.get("json_dst")
-        if dst == "" or dst is None:
+        if dst == "" or dst is None or dst == "none":
             html = download_json(src)
             dst = os.path.join(j_dir, f"{random_string()}.json")
             save_json(dst, html)
@@ -221,16 +221,16 @@ class Clean(object):
 
 def core():
     parse = argparse.ArgumentParser("Easy BookSource Build / 简单 书源构建\n")
-    parse.add_argument('-g', '--generate', type=bool, default=False, help="合成 json 文件")
-    parse.add_argument('-u', '--update', type=bool, default=False, help="根据 csv 文件更新 json 数据")
-    parse.add_argument('-c', '--clean', type=bool, default=False, help="重新命名组名")
+    parse.add_argument('-g', '--generate', type=bool, default=False, help="bool:合成 json 文件")
+    parse.add_argument('-u', '--update', type=bool, default=False, help="bool:根据 csv 文件更新 json 数据")
+    parse.add_argument('-c', '--clean', type=bool, default=False, help="bool:重新命名组名")
     
-    parse.add_argument('-a', '--add', type=str, default="", help="增加一个 json 书源")
-    parse.add_argument('-f', '--full', type=str, default="", help="增加一个 json 书院 并完整执行")
-    parse.add_argument('-m', '--comment', type=str, default="", help="json 文件备注")
-    parse.add_argument('-d', '--download', type=str, default="", help="下载文件")
+    parse.add_argument('-a', '--add', type=str, default="", help="str:书源地址")
+    parse.add_argument('-f', '--full', type=str, default="", help="str:输入为http字符串则增加书源并格式化，若为其他字符则只格式化")
+    parse.add_argument('-m', '--comment', type=str, default="", help="str:书源地址 注释")
+    parse.add_argument('-d', '--download', type=str, default="", help="str:书源地址 仅下载")
     
-    parse.add_argument('--group', '--regroup', nargs=2, type=str, help="文件路径 新的组名（空格分开两个参数）")
+    parse.add_argument('--group', '--regroup', nargs=2, type=str, help="str1:文件路径  str2:新的组名（空格分隔两个参数）")
     args = parse.parse_args()
     new_url = args.add
     is_generate = args.generate
@@ -242,11 +242,9 @@ def core():
     group = args.group
     download = args.download
     if full:
-        if new_url:
+        if "http" in new_url:
             url = new_url
-        else:
-            url = full
-        run(url, comment)
+            run(url, comment)
         update_csv()
         generate_json()
         Clean(src=Path().new_json, dst=Path().new_json).run()
