@@ -233,7 +233,7 @@ def core():
     parse.add_argument('--group', '--regroup', nargs=2, type=str, help="文件路径 新的组名（空格分开两个参数）")
     args = parse.parse_args()
     new_url = args.add
-    is_merge = args.merge
+    is_generate = args.generate
     is_update = args.update
     is_clean = args.clean
     comment = args.comment
@@ -253,14 +253,14 @@ def core():
         return None
     if new_url:
         if comment:
-            run(new_url,comment=comment)
+            run(new_url, comment=comment)
         else:
             run(new_url)
         return None
     if is_update:
         update_csv()
         return None
-    if is_merge:
+    if is_generate:
         generate_json()
         return None
     if is_clean:
