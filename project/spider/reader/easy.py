@@ -14,8 +14,9 @@ import urllib3
 
 @dataclass
 class Dict:
-    json_src: str = ""
-    json_dst: str = ""
+    json_src: str = "none"
+    json_dst: str = "none"
+    json_comment: str = "none"
 
 
 def random_string(length_of_string=16):
@@ -24,10 +25,11 @@ def random_string(length_of_string=16):
     return r_str
 
 
-def set_dict(src, dst):
+def set_dict(src, dst, comment="none"):
     d = Dict()
     d.json_src = src
     d.json_dst = dst
+    d.json_comment = comment
     return vars(d)
 
 
@@ -154,7 +156,7 @@ def generate_json():
         merge_json(filepaths, n_json)
 
 
-def run(json_url):
+def run(json_url, comment="none"):
     my_path = Path()
     j_dir = my_path.json_dir
     i_csv = my_path.index_csv
@@ -167,7 +169,7 @@ def run(json_url):
     html = download_json(json_url)
     dst = os.path.join(j_dir, f"{random_string()}.json")
     save_json(dst, html)
-    user_dict = set_dict(src=json_url, dst=dst)
+    user_dict = set_dict(src=json_url, dst=dst, comment=comment)
     write_dict_to_csv(i_csv, user_dict)
     generate_json()
 
@@ -182,7 +184,7 @@ class Clean(object):
     def __init__(self, src, dst):
         self.src_path = src
         self.dst_path = dst
-        self._group = "myGroup"
+        self._group = "group"
     
     @property
     def group(self):
@@ -207,10 +209,9 @@ class Clean(object):
         new_datas = []
         for index, data in enumerate(datas):
             name = data.get("bookSourceName", "")
-            group = data.get("bookSourceGroup", "")
+            # group = data.get("bookSourceGroup", "")
             name = str(name).strip()
-            group = str(group).strip()
-            new_str = f"{self._group}:{index}:{name}:{group}"
+            new_str = f"{self._group[0]}:{index}:{name}"
             # new_str = clear_text(new_str)
             data["bookSourceGroup"] = self._group
             data["bookSourceName"] = new_str
@@ -220,34 +221,41 @@ class Clean(object):
 
 def core():
     parse = argparse.ArgumentParser("Easy BookSource Build / 简单 书源构建\n")
+    parse.add_argument('-g', '--generate', type=bool, default=False, help="合成 json 文件")
+    parse.add_argument('-u', '--update', type=bool, default=False, help="根据 csv 文件更新 json 数据")
+    parse.add_argument('-c', '--clean', type=bool, default=False, help="重新命名组名")
     
     parse.add_argument('-a', '--add', type=str, default="", help="增加一个 json 书源")
-    parse.add_argument('-g', '-m', '--merge', '--generate', type=bool, default=False, help="合成 json 文件")
-    parse.add_argument('-u', '--update', type=bool, default=False, help="根据 csv 文件更新 json 数据")
-    parse.add_argument('-c', '--clean', '--clear', type=bool, default=False, help="重新命名组名")
-    parse.add_argument('-f', '--full', type=str, default=False, help="完整执行")
+    parse.add_argument('-f', '--full', type=str, default="", help="增加一个 json 书院 并完整执行")
+    parse.add_argument('-m', '--comment', type=str, default="", help="json 文件备注")
+    parse.add_argument('-d', '--download', type=str, default="", help="下载文件")
     
     parse.add_argument('--group', '--regroup', nargs=2, type=str, help="文件路径 新的组名（空格分开两个参数）")
-    parse.add_argument('-d', '--download', type=str, default="", help="下载文件")
     args = parse.parse_args()
-    
     new_url = args.add
     is_merge = args.merge
     is_update = args.update
     is_clean = args.clean
-    is_full = args.full
+    comment = args.comment
+    full = args.full
     
     group = args.group
     download = args.download
-    if is_full:
+    if full:
         if new_url:
-            run(new_url)
+            url = new_url
+        else:
+            url = full
+        run(url, comment)
         update_csv()
         generate_json()
         Clean(src=Path().new_json, dst=Path().new_json).run()
         return None
     if new_url:
-        run(new_url)
+        if comment:
+            run(new_url,comment=comment)
+        else:
+            run(new_url)
         return None
     if is_update:
         update_csv()
