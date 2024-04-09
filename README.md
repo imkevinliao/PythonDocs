@@ -1,10 +1,7 @@
 # 遗迹珍宝
-- [PyDocs](./markdown/PyDocs.py) (零散知识的记录)
-- [Pycharm Git Ignore](./markdown/.gitignore)
-- [ChatGPT](./markdown/ChatGPT.md)
+- [PyDocs](./markdown/PyDocs.py) (零散知识点)
 # 专栏
-* [standard library](./column/stand.md) 标准库指导
---------------------------------------
+* [standard library](./column/stand.md) 标准库
 * [crypto](./column/crypto.md)
 * [fastapi](./column/fastapi.md)
 * [lxml](./column/lxml.md)
@@ -15,7 +12,7 @@
 * [pyside](./column/pyside.md)
 * [sqlalchemy](./column/sqlalchemy.md)
 * [selenium](./column/selenium.md)
----
+------
 * subprocess <https://github.com/imkevinliao/UbuntuDocs/blob/master/shell/shell.py>
 * regex <https://blog.csdn.net/qq_41133428/article/details/128019468>
 * scrapy <https://imkevinliao.github.io/post/scrapy_code_review/>
