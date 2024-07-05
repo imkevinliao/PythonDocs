@@ -360,15 +360,22 @@ class Log(logging.Logger):
             self.addHandler(file_handler)
 """
 # 标准输出和文件输出
+import logging
+
 log = logging.getLogger("module name")
 log.setLevel(logging.DEBUG)
+
 formatter = logging.Formatter(fmt="%(asctime)s %(levelname)s [line:%(lineno)d] %(message)s", datefmt="%Y-%m-%d %H:%M:%S(%p)")
 
+# 控制台输出 DEBUG 级别及以上的日志
 stdout_handler = logging.StreamHandler()
+stdout_handler.setLevel(logging.WARNING)
 stdout_handler.setFormatter(formatter)
 log.addHandler(stdout_handler)
 
+# 文件输出 WARNING 级别及以上的日志
 file_handler = logging.FileHandler(filename="log.txt", encoding='utf-8', mode="a+")
+file_handler.setLevel(logging.WARNING)
 file_handler.setFormatter(formatter)
 log.addHandler(file_handler)
 
