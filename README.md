@@ -21,3 +21,6 @@
 * <https://github.com/imkevinliao/UbuntuDocs/blob/master/markdown/python.md>(Python 配置)
 # 项目
 * <https://github.com/tiangolo/fastapi> web框架
+
+# Bash Install Python
+[安装 Python3 并执行脚本](./install.sh)
