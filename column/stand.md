@@ -369,7 +369,7 @@ formatter = logging.Formatter(fmt="%(asctime)s %(levelname)s [line:%(lineno)d] %
 
 # 控制台输出 DEBUG 级别及以上的日志
 stdout_handler = logging.StreamHandler()
-stdout_handler.setLevel(logging.WARNING)
+stdout_handler.setLevel(logging.DEBUG)
 stdout_handler.setFormatter(formatter)
 log.addHandler(stdout_handler)
 
