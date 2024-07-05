@@ -29,3 +29,5 @@ fi
 
 # 执行python脚本
 curl -sSL https://raw.githubusercontent.com/imkevinliao/[project name]/[project branch]/[python script] | python3
+
+# https://raw.githubusercontent.com/imkevinliao/python_docs/master/install.sh
