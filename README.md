@@ -24,3 +24,6 @@
 
 # Bash Install Python
 [安装 Python3 并执行脚本](./install.sh)
+
+# 其他
+[抖音等级累计消费金额统计](./markdown/douyin_level.md)
